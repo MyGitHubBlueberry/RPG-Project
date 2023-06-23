@@ -11,10 +11,9 @@ namespace RPG.Core
    {
       public static GameInput Instance;
 
-      public event EventHandler OnMoveToCursorAction;
-      public event EventHandler OnMoveToCursorStarted;
-      public event EventHandler OnMoveToCursorCanceled;
-      public event EventHandler OnAttackPerformed;
+      public event EventHandler OnLeftClickPerformed;
+      public event EventHandler OnLeftClickStarted;
+      public event EventHandler OnLeftClickCanceled;
 
       private PlayerInputActions playerInputActions;
 
@@ -27,31 +26,24 @@ namespace RPG.Core
 
          playerInputActions.Enable();
 
-         playerInputActions.Movement.MoveToCursor.performed += MoveToCursor_performed;
-         playerInputActions.Movement.MoveToCursor.started += MoveToCursor_started;
-         playerInputActions.Movement.MoveToCursor.canceled += MoveToCursor_canceled;
-
-         playerInputActions.Combat.Attack.performed += Attack_performed;
+         playerInputActions.Mouse.LeftClick.performed += LeftClick_performed;
+         playerInputActions.Mouse.LeftClick.started += LeftClick_started;
+         playerInputActions.Mouse.LeftClick.canceled += LeftClick_canceled;
       }
 
-      private void Attack_performed(CallbackContext context)
+      private void LeftClick_canceled(CallbackContext context)
       {
-         OnAttackPerformed?.Invoke(this, EventArgs.Empty);
+         OnLeftClickCanceled?.Invoke(this, EventArgs.Empty);
       }
 
-      private void MoveToCursor_canceled(CallbackContext context)
+      private void LeftClick_started(CallbackContext context)
       {
-         OnMoveToCursorCanceled?.Invoke(this, EventArgs.Empty);
+         OnLeftClickStarted?.Invoke(this, EventArgs.Empty);
       }
 
-      private void MoveToCursor_started(CallbackContext context)
+      private void LeftClick_performed(CallbackContext context)
       {
-         OnMoveToCursorStarted?.Invoke(this, EventArgs.Empty);
-      }
-
-      private void MoveToCursor_performed(CallbackContext context)
-      {
-         OnMoveToCursorAction?.Invoke(this, EventArgs.Empty);
+         OnLeftClickPerformed?.Invoke(this, EventArgs.Empty);
       }
    }
 }

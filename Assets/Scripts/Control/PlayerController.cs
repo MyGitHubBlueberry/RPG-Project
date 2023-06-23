@@ -10,34 +10,28 @@ namespace RPG.Control
    {
       private bool isMovingToCursor;
 
-
       private void Start()
       {
-         GameInput.Instance.OnMoveToCursorAction += GameInput_OnMoveToCursorAction;
-         GameInput.Instance.OnMoveToCursorStarted += GameInput_OnMoveToCursorStarted;
-         GameInput.Instance.OnMoveToCursorCanceled += GameInput_OnMoveToCursorCanceled;
-         GameInput.Instance.OnAttackPerformed += GameInput_OnAttackPerformed;
+         GameInput.Instance.OnLeftClickPerformed += GameInput_OnLeftClickPerformed;
+         GameInput.Instance.OnLeftClickStarted += GameInput_OnLeftClickStarted;
+         GameInput.Instance.OnLeftClickCanceled += GameInput_OnLeftClickCanceled;
       }
 
       #region EventMethods
-      private void GameInput_OnMoveToCursorCanceled(object sender, EventArgs e)
+      private void GameInput_OnLeftClickCanceled(object sender, EventArgs e)
       {
          isMovingToCursor = false;
       }
 
-      private void GameInput_OnMoveToCursorStarted(object sender, EventArgs e)
+      private void GameInput_OnLeftClickStarted(object sender, EventArgs e)
       {
          isMovingToCursor = true;
       }
 
-      private void GameInput_OnMoveToCursorAction(object sender, EventArgs e)
-      {
-         MoveToCursor();
-      }
-
-      private void GameInput_OnAttackPerformed(object sender, EventArgs e)
+      private void GameInput_OnLeftClickPerformed(object sender, EventArgs e)
       {
          HandleCombat();
+         MoveToCursor();
       }
       #endregion
 
