@@ -12,8 +12,6 @@ namespace RPG.Core
       public static GameInput Instance;
 
       public event EventHandler OnLeftClickPerformed;
-      public event EventHandler OnLeftClickStarted;
-      public event EventHandler OnLeftClickCanceled;
 
       private PlayerInputActions playerInputActions;
 
@@ -27,23 +25,16 @@ namespace RPG.Core
          playerInputActions.Enable();
 
          playerInputActions.Mouse.LeftClick.performed += LeftClick_performed;
-         playerInputActions.Mouse.LeftClick.started += LeftClick_started;
-         playerInputActions.Mouse.LeftClick.canceled += LeftClick_canceled;
-      }
-
-      private void LeftClick_canceled(CallbackContext context)
-      {
-         OnLeftClickCanceled?.Invoke(this, EventArgs.Empty);
-      }
-
-      private void LeftClick_started(CallbackContext context)
-      {
-         OnLeftClickStarted?.Invoke(this, EventArgs.Empty);
       }
 
       private void LeftClick_performed(CallbackContext context)
       {
          OnLeftClickPerformed?.Invoke(this, EventArgs.Empty);
+      }
+
+      public bool GetLeftMouseButtonPressed()
+      {
+         return playerInputActions.Mouse.LeftClick.inProgress;
       }
    }
 }

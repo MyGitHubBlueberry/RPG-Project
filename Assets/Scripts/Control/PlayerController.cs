@@ -8,29 +8,16 @@ namespace RPG.Control
 {
    public class PlayerController : MonoBehaviour
    {
-      private bool isMovingToCursor;
 
       private void Start()
       {
          GameInput.Instance.OnLeftClickPerformed += GameInput_OnLeftClickPerformed;
-         GameInput.Instance.OnLeftClickStarted += GameInput_OnLeftClickStarted;
-         GameInput.Instance.OnLeftClickCanceled += GameInput_OnLeftClickCanceled;
       }
 
       #region EventMethods
-      private void GameInput_OnLeftClickCanceled(object sender, EventArgs e)
-      {
-         isMovingToCursor = false;
-      }
-
-      private void GameInput_OnLeftClickStarted(object sender, EventArgs e)
-      {
-         isMovingToCursor = true;
-      }
-
       private void GameInput_OnLeftClickPerformed(object sender, EventArgs e)
       {
-         HandleCombat();
+         if(TryHandleCombat()) return;
          MoveToCursor();
       }
       #endregion
@@ -40,7 +27,7 @@ namespace RPG.Control
          HandleMovement();
       }
 
-      private void HandleCombat()
+      private bool TryHandleCombat()
       {
          RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
 
@@ -51,16 +38,17 @@ namespace RPG.Control
 
             GetComponent<Fighter>().Attack(target);
                
-            return;
+            return true;
          }
+
+         return false;
       }
 
       private void HandleMovement()
       {
-         if(isMovingToCursor)
+         if(GameInput.Instance.GetLeftMouseButtonPressed())
          {
             MoveToCursor();
-            return;
          }
       }
 
