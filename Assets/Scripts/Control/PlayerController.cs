@@ -17,49 +17,57 @@ namespace RPG.Control
       #region EventMethods
       private void GameInput_OnLeftClickPerformed(object sender, EventArgs e)
       {
-         if(TryHandleCombat()) return;
-         MoveToCursor();
+         HandleCombat();
       }
       #endregion
 
       private void Update()
       {
-         HandleMovement();
+         if(HandleMovement()) return;
+         print("nothing to do");
       }
 
-      private bool TryHandleCombat()
+      private void HandleCombat()
       {
          RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
 
-         foreach (RaycastHit hit in hits)
+         if(ContainsCombatTarget(out CombatTarget target, hits))
          {
-            CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-            if(target == null) continue;
-
             GetComponent<Fighter>().Attack(target);
-               
-            return true;
-         }
-
-         return false;
-      }
-
-      private void HandleMovement()
-      {
-         if(GameInput.Instance.GetLeftMouseButtonPressed())
-         {
-            MoveToCursor();
          }
       }
 
-      private void MoveToCursor()
+      private bool HandleMovement()
       {
-         bool hasHit = Physics.Raycast(GetMouseRay(), out RaycastHit raycastHit);
+         bool hasHit = Physics.Raycast(GetMouseRay(), out RaycastHit hit);
 
          if (hasHit)
          {
-            GetComponent<Mover>().MoveTo(raycastHit.point);
+            if(GameInput.Instance.IsLeftMouseButtonPressed() && !ContainsCombatTarget(hit))
+            {
+               GetComponent<Mover>().MoveTo(hit.point);
+            }
+            return true;
          }
+         return false;
+      }
+
+      private bool ContainsCombatTarget(out CombatTarget target, params RaycastHit[] hits)
+      {
+         foreach (RaycastHit hit in hits)
+         {
+            target = hit.transform.GetComponent<CombatTarget>();
+            if(target == null) continue;
+            
+            return true;
+         }
+         target = null;
+         return false;
+      }
+
+      private bool ContainsCombatTarget(params RaycastHit[] hits)
+      {
+         return ContainsCombatTarget(out _, hits);
       }
 
       private static Ray GetMouseRay()

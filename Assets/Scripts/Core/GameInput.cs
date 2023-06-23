@@ -32,7 +32,7 @@ namespace RPG.Core
          OnLeftClickPerformed?.Invoke(this, EventArgs.Empty);
       }
 
-      public bool GetLeftMouseButtonPressed()
+      public bool IsLeftMouseButtonPressed()
       {
          return playerInputActions.Mouse.LeftClick.inProgress;
       }
