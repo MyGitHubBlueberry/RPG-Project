@@ -8,42 +8,35 @@ namespace RPG.Control
 {
    public class PlayerController : MonoBehaviour
    {
-
-      private void Start()
-      {
-         GameInput.Instance.OnLeftClickPerformed += GameInput_OnLeftClickPerformed;
-      }
-
-      #region EventMethods
-      private void GameInput_OnLeftClickPerformed(object sender, EventArgs e)
-      {
-         HandleCombat();
-      }
-      #endregion
+      private int leftMouseButton = 0;
 
       private void Update()
       {
+         if(HandleCombat()) return;
          if(HandleMovement()) return;
          print("nothing to do");
       }
 
-      private void HandleCombat()
+      private bool HandleCombat()
       {
          RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
-
          if(ContainsCombatTarget(out CombatTarget target, hits))
          {
-            GetComponent<Fighter>().Attack(target);
+            if(Input.GetMouseButtonDown(leftMouseButton))
+            {
+               GetComponent<Fighter>().Attack(target);
+            }
+            return true;
          }
+         return false;
       }
 
       private bool HandleMovement()
       {
          bool hasHit = Physics.Raycast(GetMouseRay(), out RaycastHit hit);
-
          if (hasHit)
          {
-            if(GameInput.Instance.IsLeftMouseButtonPressed() && !ContainsCombatTarget(hit))
+            if(Input.GetMouseButton(leftMouseButton))
             {
                GetComponent<Mover>().MoveTo(hit.point);
             }

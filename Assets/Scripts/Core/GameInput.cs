@@ -11,8 +11,6 @@ namespace RPG.Core
    {
       public static GameInput Instance;
 
-      public event EventHandler OnLeftClickPerformed;
-
       private PlayerInputActions playerInputActions;
 
 
@@ -23,18 +21,6 @@ namespace RPG.Core
          playerInputActions = new PlayerInputActions();
 
          playerInputActions.Enable();
-
-         playerInputActions.Mouse.LeftClick.performed += LeftClick_performed;
-      }
-
-      private void LeftClick_performed(CallbackContext context)
-      {
-         OnLeftClickPerformed?.Invoke(this, EventArgs.Empty);
-      }
-
-      public bool IsLeftMouseButtonPressed()
-      {
-         return playerInputActions.Mouse.LeftClick.inProgress;
       }
    }
 }
