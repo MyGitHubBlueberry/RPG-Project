@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using RPG.Combat;
 
 namespace RPG.Movement
 {
@@ -14,6 +15,12 @@ namespace RPG.Movement
       private void Start()
       {
          navMeshAgent = GetComponent<NavMeshAgent>();
+      }
+
+      public void StartMoving(Vector3 destination)
+      {
+         MoveTo(destination);
+         GetComponent<Fighter>().Cancel();
       }
 
       public void MoveTo(Vector3 destination)
