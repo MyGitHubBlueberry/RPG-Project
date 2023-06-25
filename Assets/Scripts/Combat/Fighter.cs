@@ -8,6 +8,7 @@ namespace RPG.Combat
    public class Fighter : MonoBehaviour, IAction
    {
       public event EventHandler OnAttack;
+      public event EventHandler OnAttackCanceled;
 
       [SerializeField] private float weaponRange = 2f;
       [SerializeField] private float weaponDamage = 5f;
@@ -69,6 +70,7 @@ namespace RPG.Combat
 
       public void Cancel()
       {
+         OnAttackCanceled?.Invoke(this, EventArgs.Empty);
          target = null;
       }
    }

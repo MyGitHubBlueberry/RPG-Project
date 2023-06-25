@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace RPG.Core
+namespace RPG.Combat
 {
    public class Health : MonoBehaviour
    {
@@ -23,7 +23,7 @@ namespace RPG.Core
       private void Die()
       {
          if(isDead) return;
-         
+
          isDead = true;
          OnZeroHealth?.Invoke(this, EventArgs.Empty);
       }

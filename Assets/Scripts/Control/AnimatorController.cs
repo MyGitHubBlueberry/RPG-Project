@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using RPG.Movement;
 using RPG.Combat;
-using RPG.Core;
 using System;
 
 namespace RPG.Control
@@ -15,6 +14,7 @@ namespace RPG.Control
       private const string FORWARD_SPEED = "forwardSpeed";
       private const string ATTACK = "attack";
       private const string DIE = "die";
+      private const string CANCEL_ATTACK = "cancelAttack";
 
 
       private void Awake()
@@ -27,7 +27,13 @@ namespace RPG.Control
       private void Start()
       {
          fighter.OnAttack += Fighter_OnAttack;
+         fighter.OnAttackCanceled += fighter_OnAttackCanceled;
          GetComponent<Health>().OnZeroHealth += Health_OnZeroHealth;
+      }
+
+      private void fighter_OnAttackCanceled(object sender, EventArgs e)
+      {
+         animator.SetTrigger(CANCEL_ATTACK);
       }
 
       private void Health_OnZeroHealth(object sender, EventArgs e)
