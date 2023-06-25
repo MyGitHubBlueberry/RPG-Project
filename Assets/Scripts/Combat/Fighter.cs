@@ -10,9 +10,12 @@ namespace RPG.Combat
       public event EventHandler OnAttack;
 
       [SerializeField] private float weaponRange = 2f;
+      [SerializeField] private float timeBetweenAttacks = 1f;
 
       private Transform target;
       private Mover mover;
+      private float timeSinceLastAttack;
+
 
       private void Start()
       {
@@ -21,6 +24,8 @@ namespace RPG.Combat
 
       private void Update()
       {
+         timeSinceLastAttack += Time.deltaTime;
+
          if(target == null) return;
 
          if (!GetIsInRange())
@@ -36,7 +41,11 @@ namespace RPG.Combat
 
       private void AttackBehaviour()
       {
-         OnAttack?.Invoke(this, EventArgs.Empty);
+         if(timeSinceLastAttack > timeBetweenAttacks)
+         {
+            OnAttack?.Invoke(this, EventArgs.Empty);
+            timeSinceLastAttack = 0f;
+         }
       }
 
       private bool GetIsInRange()
