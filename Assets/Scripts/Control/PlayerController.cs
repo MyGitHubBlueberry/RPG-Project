@@ -8,7 +8,13 @@ namespace RPG.Control
 {
    public class PlayerController : MonoBehaviour
    {
+      private Fighter fighter;
       private int leftMouseButton = 0;
+
+      private void Awake()
+      {
+         fighter = GetComponent<Fighter>();
+      }
 
       private void Update()
       {
@@ -24,7 +30,7 @@ namespace RPG.Control
          {
             if(Input.GetMouseButtonDown(leftMouseButton))
             {
-               GetComponent<Fighter>().Attack(target);
+               fighter.Attack(target);
             }
             return true;
          }
@@ -50,17 +56,12 @@ namespace RPG.Control
          foreach (RaycastHit hit in hits)
          {
             target = hit.transform.GetComponent<CombatTarget>();
-            if(target == null) continue;
+            if(!fighter.CanAttack(target)) continue;
             
             return true;
          }
          target = null;
          return false;
-      }
-
-      private bool ContainsCombatTarget(params RaycastHit[] hits)
-      {
-         return ContainsCombatTarget(out _, hits);
       }
 
       private static Ray GetMouseRay()

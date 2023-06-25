@@ -28,7 +28,7 @@ namespace RPG.Combat
       {
          timeSinceLastAttack += Time.deltaTime;
 
-         if(target == null || target.GetIsDead()) return;
+         if (target == null || target.GetIsDead()) return;
 
          if (!GetIsInRange())
          {
@@ -39,6 +39,11 @@ namespace RPG.Combat
             mover.Cancel();
             AttackBehaviour();
          }
+      }
+
+      public bool CanAttack(CombatTarget target)
+      {
+         return target != null && !target.GetComponent<Health>().GetIsDead();
       }
 
       private void AttackBehaviour()
