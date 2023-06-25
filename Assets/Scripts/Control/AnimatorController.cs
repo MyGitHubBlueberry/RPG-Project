@@ -33,6 +33,7 @@ namespace RPG.Control
 
       private void fighter_OnAttackCanceled(object sender, EventArgs e)
       {
+         animator.ResetTrigger(ATTACK);
          animator.SetTrigger(CANCEL_ATTACK);
       }
 
@@ -43,6 +44,7 @@ namespace RPG.Control
 
       private void Fighter_OnAttack(object sender, EventArgs e)
       {
+         animator.ResetTrigger(CANCEL_ATTACK);
          animator.SetTrigger(ATTACK);
       }
 

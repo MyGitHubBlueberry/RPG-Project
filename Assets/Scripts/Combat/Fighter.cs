@@ -60,6 +60,7 @@ namespace RPG.Combat
        //*AnimationEvent
       private void Hit()
       {
+         if(target == null) return;
          target.TakeDamage(weaponDamage);
       }
 
