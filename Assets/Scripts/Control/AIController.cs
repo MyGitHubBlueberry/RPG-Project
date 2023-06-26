@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using RPG.Combat;
@@ -10,7 +11,9 @@ namespace RPG.Control
    public class AIController : MonoBehaviour
    {
       [SerializeField] private float chaseDistance = 5f;
-      [SerializeField]private float suspicionTime = 5f;
+      [SerializeField] private float suspicionTime = 5f;
+      [SerializeField] private float waypointTolerance = 1f;
+      [SerializeField] private PatrolPath patrolPath;
       
       private const string PLAYER = "Player";
 
@@ -21,6 +24,7 @@ namespace RPG.Control
 
       private Vector3 guardPosition; 
       private float timeSinceLastSawPlayer = Mathf.Infinity;
+      private int currentWaypointIndex = 0;
 
       private void Awake()
       {
@@ -45,16 +49,43 @@ namespace RPG.Control
          {
             SuspicionBehaviour();
          }
-         else if(guardPosition != transform.position)
+         else
          {
-            GuardBehaviour();
+            PatrolBehaviour();
          }
 
       }
 
-      private void GuardBehaviour()
+      private void PatrolBehaviour()
       {
-         mover.StartMoveAction(guardPosition);
+         Vector3 nextPosition = guardPosition;
+
+         if(patrolPath != null)
+         {
+            if(AtWaypoint())
+            {
+               CycleWaypoint();
+            }
+            nextPosition = GetCurrentWaypoint();
+         }
+
+         mover.StartMoveAction(nextPosition);
+      }
+
+      private bool AtWaypoint()
+      {
+         float distanceToWaypoint = Vector3.Distance(transform.position, GetCurrentWaypoint());
+         return distanceToWaypoint < waypointTolerance;
+      }
+
+      private void CycleWaypoint()
+      {
+         currentWaypointIndex = patrolPath.GetNextIndex(currentWaypointIndex);
+      }
+
+      private Vector3 GetCurrentWaypoint()
+      {
+         return patrolPath.GetWaypoint(currentWaypointIndex);
       }
 
       private void SuspicionBehaviour()
