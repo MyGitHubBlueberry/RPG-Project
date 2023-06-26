@@ -27,7 +27,7 @@ namespace RPG.Movement
          navMeshAgent.enabled = false;
       }
 
-      public void StartMoving(Vector3 destination)
+      public void StartMoveAction(Vector3 destination)
       {
          MoveTo(destination);
          GetComponent<ActionScheduler>().StartAction(this);
