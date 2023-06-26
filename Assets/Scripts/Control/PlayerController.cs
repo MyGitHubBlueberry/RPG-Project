@@ -2,24 +2,28 @@ using System;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Combat;
+using RPG.Core;
 
 namespace RPG.Control
 {
    public class PlayerController : MonoBehaviour
    {
       private Fighter fighter;
+      private Health health;
       private int leftMouseButton = 0;
 
       private void Awake()
       {
          fighter = GetComponent<Fighter>();
+         health = GetComponent<Health>();
       }
 
       private void Update()
       {
+         if(health.GetIsDead()) return;
+
          if(HandleCombat()) return;
          if(HandleMovement()) return;
-         print("nothing to do");
       }
 
       private bool HandleCombat()

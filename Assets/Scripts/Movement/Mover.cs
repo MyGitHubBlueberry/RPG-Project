@@ -12,9 +12,19 @@ namespace RPG.Movement
    {
       private NavMeshAgent navMeshAgent;
 
-      private void Start()
+      private void Awake()
       {
          navMeshAgent = GetComponent<NavMeshAgent>();
+      }
+
+      private void Start()
+      {
+         GetComponent<Health>().OnZeroHealth += Health_OnZeroHealth;
+      }
+
+      private void Health_OnZeroHealth(object sender, EventArgs e)
+      {
+         navMeshAgent.enabled = false;
       }
 
       public void StartMoving(Vector3 destination)

@@ -16,10 +16,10 @@ namespace RPG.Combat
 
       private Health target;
       private Mover mover;
-      private float timeSinceLastAttack;
+      private float timeSinceLastAttack = Mathf.Infinity;
 
 
-      private void Start()
+      private void Awake()
       {
          mover = GetComponent<Mover>();
       }
