@@ -116,6 +116,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 4223814044176242742, guid: 79c4ecf49f335a3078602920e1d03343, type: 3}
+      propertyPath: m_Speed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5772739409859863493, guid: 79c4ecf49f335a3078602920e1d03343, type: 3}
       propertyPath: health
       value: 20
@@ -127,6 +131,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4223814044176242739, guid: 79c4ecf49f335a3078602920e1d03343, type: 3}
   m_PrefabInstance: {fileID: 3998296215092754567}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &8556075536939538064
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000587775596699828}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.88, z: 0}
 --- !u!114 &4911584698714014073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,20 +170,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseDistance: 5
---- !u!136 &8556075536939538064
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000587775596699828}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.88, z: 0}
 --- !u!4 &1000587775596699831 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4223814044176242736, guid: 79c4ecf49f335a3078602920e1d03343, type: 3}

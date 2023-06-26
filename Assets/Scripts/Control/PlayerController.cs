@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using RPG.Core;
 using RPG.Movement;
 using RPG.Combat;
 
@@ -30,7 +29,7 @@ namespace RPG.Control
          {
             if(Input.GetMouseButtonDown(leftMouseButton))
             {
-               fighter.Attack(target);
+               fighter.Attack(target.gameObject);
             }
             return true;
          }
@@ -56,7 +55,8 @@ namespace RPG.Control
          foreach (RaycastHit hit in hits)
          {
             target = hit.transform.GetComponent<CombatTarget>();
-            if(!fighter.CanAttack(target)) continue;
+            if(target == null) continue;
+            if(!fighter.CanAttack(target.gameObject)) continue;
             
             return true;
          }
@@ -64,7 +64,7 @@ namespace RPG.Control
          return false;
       }
 
-      private static Ray GetMouseRay()
+      private Ray GetMouseRay()
       {
          return Camera.main.ScreenPointToRay(Input.mousePosition);
       }

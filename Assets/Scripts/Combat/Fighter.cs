@@ -41,10 +41,7 @@ namespace RPG.Combat
          }
       }
 
-      public bool CanAttack(CombatTarget target)
-      {
-         return target != null && !target.GetComponent<Health>().GetIsDead();
-      }
+      
 
       private void AttackBehaviour()
       {
@@ -69,7 +66,12 @@ namespace RPG.Combat
          return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
       }
 
-      public void Attack(CombatTarget combatTarget)
+      public bool CanAttack(GameObject combatTarget)
+      {
+         return combatTarget.GetComponent<Health>() != null && !combatTarget.GetComponent<Health>().GetIsDead();
+      }
+
+      public void Attack(GameObject combatTarget)
       {
          GetComponent<ActionScheduler>().StartAction(this);
          target = combatTarget.GetComponent<Health>();

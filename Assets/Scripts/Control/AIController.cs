@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RPG.Combat;
 using UnityEngine;
 
 namespace RPG.Control
@@ -10,19 +11,33 @@ namespace RPG.Control
       
       private const string PLAYER = "Player";
 
+      private Fighter fighter;
+      private GameObject player;
+
+
+      private void Awake()
+      {
+         fighter = GetComponent<Fighter>();
+         player = GameObject.FindWithTag(PLAYER);
+
+      }
       private void Update()
       {
-         if(DistanceToPlayer() < chaseDistance)
+         if(InAttackRangeOfPlayer() && fighter.CanAttack(player))
          {
-            print("Chase " + gameObject.name);
+            fighter.Attack(player);
+         }
+         else
+         {
+            fighter.Cancel();
          }
 
       }
 
-      private float DistanceToPlayer()
+      private bool InAttackRangeOfPlayer()
       {
-         GameObject player = GameObject.FindWithTag(PLAYER);
-         return Vector3.Distance(transform.position, player.transform.position);
+         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+         return distanceToPlayer < chaseDistance;
       }
 
    }
