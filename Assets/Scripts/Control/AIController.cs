@@ -13,6 +13,7 @@ namespace RPG.Control
       [SerializeField] private float chaseDistance = 5f;
       [SerializeField] private float suspicionTime = 5f;
       [SerializeField] private float waypointTolerance = 1f;
+      [SerializeField] private float waypointDwellTime = 3f;
       [SerializeField] private PatrolPath patrolPath;
       
       private const string PLAYER = "Player";
@@ -24,6 +25,7 @@ namespace RPG.Control
 
       private Vector3 guardPosition; 
       private float timeSinceLastSawPlayer = Mathf.Infinity;
+      private float timeSinceArrivedAtWaypoint = Mathf.Infinity;
       private int currentWaypointIndex = 0;
 
       private void Awake()
@@ -38,11 +40,10 @@ namespace RPG.Control
 
       private void Update()
       {
-         if(health.GetIsDead()) return;
-         
-         if(InAttackRangeOfPlayer() && fighter.CanAttack(player))
+         if (health.GetIsDead()) return;
+
+         if (InAttackRangeOfPlayer() && fighter.CanAttack(player))
          {
-            timeSinceLastSawPlayer = 0f;
             AttackBehaviour();
          }
          else if (timeSinceLastSawPlayer < suspicionTime)
@@ -54,6 +55,14 @@ namespace RPG.Control
             PatrolBehaviour();
          }
 
+         UpdateTimers();
+
+      }
+
+      private void UpdateTimers()
+      {
+         timeSinceLastSawPlayer += Time.deltaTime;
+         timeSinceArrivedAtWaypoint += Time.deltaTime;
       }
 
       private void PatrolBehaviour()
@@ -64,12 +73,16 @@ namespace RPG.Control
          {
             if(AtWaypoint())
             {
+               timeSinceArrivedAtWaypoint = 0;
                CycleWaypoint();
             }
             nextPosition = GetCurrentWaypoint();
          }
 
-         mover.StartMoveAction(nextPosition);
+         if(timeSinceArrivedAtWaypoint > waypointDwellTime)
+         {
+            mover.StartMoveAction(nextPosition);
+         }
       }
 
       private bool AtWaypoint()
@@ -90,12 +103,12 @@ namespace RPG.Control
 
       private void SuspicionBehaviour()
       {
-         timeSinceLastSawPlayer += Time.deltaTime;
          GetComponent<ActionScheduler>().CancelCurrentAction();
       }
 
       private void AttackBehaviour()
       {
+         timeSinceLastSawPlayer = 0f;
          fighter.Attack(player);
       }
 

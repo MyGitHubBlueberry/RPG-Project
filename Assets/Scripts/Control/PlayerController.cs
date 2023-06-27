@@ -31,7 +31,7 @@ namespace RPG.Control
          RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
          if(ContainsCombatTarget(out CombatTarget target, hits))
          {
-            if(Input.GetMouseButtonDown(leftMouseButton))
+            if(Input.GetMouseButton(leftMouseButton))
             {
                fighter.Attack(target.gameObject);
             }
