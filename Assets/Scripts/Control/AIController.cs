@@ -12,9 +12,11 @@ namespace RPG.Control
    {
       [SerializeField] private float chaseDistance = 5f;
       [SerializeField] private float suspicionTime = 5f;
+      [SerializeField] private PatrolPath patrolPath;
       [SerializeField] private float waypointTolerance = 1f;
       [SerializeField] private float waypointDwellTime = 3f;
-      [SerializeField] private PatrolPath patrolPath;
+      [Range(0,1)]
+      [SerializeField] private float patrolSpeedCoefficient = 0.2f;
       
       private const string PLAYER = "Player";
 
@@ -81,7 +83,7 @@ namespace RPG.Control
 
          if(timeSinceArrivedAtWaypoint > waypointDwellTime)
          {
-            mover.StartMoveAction(nextPosition);
+            mover.StartMoveAction(nextPosition, patrolSpeedCoefficient);
          }
       }
 

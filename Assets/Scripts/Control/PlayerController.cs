@@ -47,7 +47,7 @@ namespace RPG.Control
          {
             if(Input.GetMouseButton(leftMouseButton))
             {
-               GetComponent<Mover>().StartMoveAction(hit.point);
+               GetComponent<Mover>().StartMoveAction(hit.point, 1f);
             }
             return true;
          }
