@@ -18,8 +18,6 @@ namespace RPG.Control
       [Range(0,1)]
       [SerializeField] private float patrolSpeedCoefficient = 0.2f;
       
-      private const string PLAYER = "Player";
-
       private Fighter fighter;
       private Health health;
       private Mover mover;
@@ -35,7 +33,7 @@ namespace RPG.Control
          fighter = GetComponent<Fighter>();
          health = GetComponent<Health>();
          mover = GetComponent<Mover>();
-         player = GameObject.FindWithTag(PLAYER);
+         player = GameObject.FindWithTag(Tags.Player.ToString());
 
          guardPosition = transform.position;
       }
