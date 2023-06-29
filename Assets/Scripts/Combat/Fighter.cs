@@ -81,6 +81,7 @@ namespace RPG.Combat
       {
          OnAttackCanceled?.Invoke(this, EventArgs.Empty);
          target = null;
+         mover.Cancel();
       }
    }
 }
