@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using RPG.Combat;
 using RPG.Core;
 using RPG.Movement;
+using RPG.Tags;
 using UnityEngine;
 
 namespace RPG.Control
@@ -33,7 +32,7 @@ namespace RPG.Control
          fighter = GetComponent<Fighter>();
          health = GetComponent<Health>();
          mover = GetComponent<Mover>();
-         player = GameObject.FindWithTag(Tags.Player.ToString());
+         player = GameObject.FindWithTag(Tag.Player.ToString());
 
          guardPosition = transform.position;
       }

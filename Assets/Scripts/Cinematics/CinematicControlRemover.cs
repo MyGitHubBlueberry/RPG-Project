@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 using UnityEngine.Playables;
 using RPG.Core;
+using RPG.Tags;
 using RPG.Control;
 
 namespace RPG.Cinematics
@@ -14,7 +12,7 @@ namespace RPG.Cinematics
 
       private void Awake()
       {
-         player = GameObject.FindWithTag(Tags.Player.ToString());         
+         player = GameObject.FindWithTag(Tag.Player.ToString());         
       }
 
       private void Start()

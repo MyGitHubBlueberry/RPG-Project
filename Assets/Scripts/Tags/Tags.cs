@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPG.Core
+namespace RPG.Tags
 {  
-   public enum Tags
+   public enum Tag
    {
       Untagged,      
       Respawn,
