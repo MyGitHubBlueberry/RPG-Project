@@ -25,6 +25,7 @@ namespace RPG.Core
          if(isDead) return;
 
          isDead = true;
+         GetComponent<ActionScheduler>().CancelCurrentAction();
          OnZeroHealth?.Invoke(this, EventArgs.Empty);
       }
 

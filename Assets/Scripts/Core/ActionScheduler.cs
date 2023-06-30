@@ -8,16 +8,6 @@ namespace RPG.Core
    {
       private IAction currentAction;
 
-      private void Awake()
-      {
-         GetComponent<Health>().OnZeroHealth += Health_OnZeroHealth;
-      }
-
-      private void Health_OnZeroHealth(object sender, EventArgs e)
-      {
-         CancelCurrentAction();
-      }
-
       public void StartAction(IAction action)
       {
          if(currentAction == action) return;
