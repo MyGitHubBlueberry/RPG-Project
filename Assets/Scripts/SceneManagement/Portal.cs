@@ -1,6 +1,7 @@
 using UnityEngine;
 using RPG.Tags;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 namespace RPG.SceneManagement
 {
@@ -15,15 +16,24 @@ namespace RPG.SceneManagement
          Sandbox2Scene,
       }
 
-
       private void OnTriggerEnter(Collider other)
       {
          if(other.gameObject.tag != Tag.Player.ToString()) return;
 
          if(targetScene != Scene.None)
          {
-            SceneManager.LoadScene(targetScene.ToString());
+            StartCoroutine(Transition());
          }
       }
+
+      private IEnumerator Transition()
+      {
+         DontDestroyOnLoad(gameObject);
+         yield return SceneManager.LoadSceneAsync(targetScene.ToString());
+         
+         print("Scene Loaded");
+         Destroy(gameObject);
+      }
+
    }
 }
