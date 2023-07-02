@@ -12,6 +12,13 @@ namespace RPG.SceneManagement
       [SerializeField] private Scene targetScene;
       [SerializeField] private Transform spawnPoint;
       [SerializeField] private DestionationIdentifier destination;
+      [Min(0)]
+      [SerializeField] private float fadeOutTime = .5f;
+      [Min(0)]
+      [SerializeField] private float fadeWaitTime = .5f;
+      [Min(0)]
+      [SerializeField] private float fadeInTime = 1f;
+      
 
       private enum Scene
       {
@@ -42,10 +49,17 @@ namespace RPG.SceneManagement
          }
 
          DontDestroyOnLoad(gameObject);
+
+         Fader fader = FindObjectOfType<Fader>();
+
+         yield return fader.FadeOut(fadeOutTime);
          yield return SceneManager.LoadSceneAsync(targetScene.ToString());
 
          Portal destination = GetOtherPortal();
          UpdatePlayer(destination);
+
+         yield return new WaitForSeconds(fadeWaitTime);
+         yield return fader.FadeIn(fadeInTime);
 
          Destroy(gameObject);
       }
