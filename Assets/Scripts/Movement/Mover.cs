@@ -1,13 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using RPG.Core;
+using RPG.Saving;
+using Newtonsoft.Json.Linq;
 
 namespace RPG.Movement
 {
-   public class Mover : MonoBehaviour, IAction
+   public class Mover : MonoBehaviour, IAction, ISaveable
    {
       [SerializeField] private float maxSpeed = 6f;
 
@@ -53,6 +53,19 @@ namespace RPG.Movement
          float speed = localVelocity.z;
 
          return speed;
+      }
+
+      public JToken CaptureAsJToken()
+      {
+         return transform.position.ToToken();
+      }
+
+      public void RestoreFromJToken(JToken state)
+      {
+         navMeshAgent.enabled = false;
+         transform.position = state.ToVector3();
+         navMeshAgent.enabled = true;
+         GetComponent<ActionScheduler>().CancelCurrentAction();
       }
 
    }

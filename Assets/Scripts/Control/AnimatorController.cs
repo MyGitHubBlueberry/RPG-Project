@@ -10,25 +10,35 @@ namespace RPG.Control
    {
       private Animator animator;
       private Mover mover;
-      private Fighter fighter;
       private const string FORWARD_SPEED = "forwardSpeed";
       private const string ATTACK = "attack";
       private const string DIE = "die";
       private const string CANCEL_ATTACK = "cancelAttack";
+
+      //State name
+      private const string DEATH = "Death";
 
 
       private void Awake()
       {
          animator = GetComponent<Animator>();
          mover = GetComponent<Mover>();
-         fighter = GetComponent<Fighter>();
       }
 
       private void Start()
       {
+         Fighter fighter = GetComponent<Fighter>();
+         Health health = GetComponent<Health>();
+         
          fighter.OnAttack += Fighter_OnAttack;
          fighter.OnAttackCanceled += fighter_OnAttackCanceled;
-         GetComponent<Health>().OnZeroHealth += Health_OnZeroHealth;
+         health.OnZeroHealth += Health_OnZeroHealth;
+         health.OnLoadedDead += Health_OnLoadedDead;
+      }
+
+      private void Health_OnLoadedDead(object sender, EventArgs e)
+      {
+         animator.Play(DEATH);
       }
 
       private void fighter_OnAttackCanceled(object sender, EventArgs e)
