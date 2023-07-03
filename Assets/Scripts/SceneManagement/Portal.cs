@@ -4,12 +4,13 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
 using UnityEngine.AI;
+using RPG.SceneManagement.Scenes;
 
 namespace RPG.SceneManagement
 {
    public class Portal : MonoBehaviour
    {
-      [SerializeField] private Scene targetScene;
+      [SerializeField] private Scenes.Scene targetScene;
       [SerializeField] private Transform spawnPoint;
       [SerializeField] private DestionationIdentifier destination;
       [Min(0)]
@@ -18,14 +19,6 @@ namespace RPG.SceneManagement
       [SerializeField] private float fadeWaitTime = .5f;
       [Min(0)]
       [SerializeField] private float fadeInTime = 1f;
-      
-
-      private enum Scene
-      {
-         None,
-         SandboxScene,
-         Sandbox2Scene,
-      }
 
       private enum DestionationIdentifier
       {
@@ -42,7 +35,7 @@ namespace RPG.SceneManagement
 
       private IEnumerator Transition()
       {
-         if(targetScene == Scene.None)
+         if(targetScene == Scenes.Scene.None)
          {
             Debug.LogError("<color=orange>Scene to load</color> not set");
             yield break;
