@@ -59,6 +59,11 @@ namespace RPG.Saving
          string path = GetPathFromSaveFile(saveFile);
          print("Saving to " + path);
 
+         if (!File.Exists(path))
+         {
+            return new JObject();
+         }
+
          using(TextReader textReader = File.OpenText(path))
          using(JsonTextReader jsonTextReader = new JsonTextReader(textReader))
          {
@@ -72,7 +77,7 @@ namespace RPG.Saving
       {
          string path = GetPathFromSaveFile(saveFile);
          print("Saving to " + path);
-         
+
          using(TextWriter textWriter = File.CreateText(path))
          using(JsonTextWriter jsonTextWriter = new JsonTextWriter(textWriter))
          {
