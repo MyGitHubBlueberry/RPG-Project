@@ -57,7 +57,6 @@ namespace RPG.Saving
       private JObject LoadJsonFromFile(string saveFile)
       {
          string path = GetPathFromSaveFile(saveFile);
-         print("Saving to " + path);
 
          if (!File.Exists(path))
          {
@@ -76,7 +75,6 @@ namespace RPG.Saving
       private void SaveFileAsJSon(string saveFile, JObject state)
       {
          string path = GetPathFromSaveFile(saveFile);
-         print("Saving to " + path);
 
          using(TextWriter textWriter = File.CreateText(path))
          using(JsonTextWriter jsonTextWriter = new JsonTextWriter(textWriter))

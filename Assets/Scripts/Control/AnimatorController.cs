@@ -10,6 +10,8 @@ namespace RPG.Control
    {
       private Animator animator;
       private Mover mover;
+      private Fighter fighter;
+      private Health health;
       private const string FORWARD_SPEED = "forwardSpeed";
       private const string ATTACK = "attack";
       private const string DIE = "die";
@@ -23,13 +25,12 @@ namespace RPG.Control
       {
          animator = GetComponent<Animator>();
          mover = GetComponent<Mover>();
+         fighter = GetComponent<Fighter>();
+         health = GetComponent<Health>();
       }
 
       private void Start()
       {
-         Fighter fighter = GetComponent<Fighter>();
-         Health health = GetComponent<Health>();
-         
          fighter.OnAttack += Fighter_OnAttack;
          fighter.OnAttackCanceled += fighter_OnAttackCanceled;
          health.OnZeroHealth += Health_OnZeroHealth;
