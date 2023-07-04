@@ -13,6 +13,9 @@ namespace RPG.Combat
       [SerializeField] private float weaponRange = 2f;
       [SerializeField] private float weaponDamage = 5f;
       [SerializeField] private float timeBetweenAttacks = 1f;
+      [SerializeField] private GameObject weaponPrefab = null;
+      [SerializeField] private Transform hand = null;
+
 
       private Health target;
       private Mover mover;
@@ -22,6 +25,11 @@ namespace RPG.Combat
       private void Awake()
       {
          mover = GetComponent<Mover>();
+      }
+
+      private void Start()
+      {
+         SpawnWeapon();
       }
 
       private void Update()
@@ -41,7 +49,10 @@ namespace RPG.Combat
          }
       }
 
-      
+      private void SpawnWeapon()
+      {
+         Instantiate(weaponPrefab, hand);
+      }
 
       private void AttackBehaviour()
       {
