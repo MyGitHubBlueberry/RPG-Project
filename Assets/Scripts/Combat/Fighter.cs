@@ -9,13 +9,17 @@ namespace RPG.Combat
    {
       public event EventHandler OnAttack;
       public event EventHandler OnAttackCanceled;
+      public event EventHandler<OnAnyWeaponSpawnedEventArgs> OnWeaponSpawned;
+      public class OnAnyWeaponSpawnedEventArgs : EventArgs
+      {
+         public AnimatorOverrideController AnimatorOverride { get; set; }
+      }
 
       [SerializeField] private float weaponRange = 2f;
       [SerializeField] private float weaponDamage = 5f;
       [SerializeField] private float timeBetweenAttacks = 1f;
-      [SerializeField] private GameObject weaponPrefab = null;
       [SerializeField] private Transform hand = null;
-      [SerializeField] private AnimatorOverrideController weaponOverride = null;
+      [SerializeField] private Weapon weapon = null;
 
 
       private Health target;
@@ -52,9 +56,13 @@ namespace RPG.Combat
 
       private void SpawnWeapon()
       {
-         Instantiate(weaponPrefab, hand);
-         Animator animator  = GetComponent<Animator>();
-         animator.runtimeAnimatorController = weaponOverride;
+         if(weapon == null) return;
+         AnimatorOverrideController animatorOverride;
+         weapon.Spawn(hand, out animatorOverride);
+
+         OnWeaponSpawned?.Invoke(this, new OnAnyWeaponSpawnedEventArgs{
+            AnimatorOverride = animatorOverride,
+         });
       }
 
       private void AttackBehaviour()

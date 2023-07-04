@@ -28,6 +28,10 @@ namespace RPG.Control
          fighter = GetComponent<Fighter>();
          health = GetComponent<Health>();
       }
+      private void OnEnable()
+      {
+         fighter.OnWeaponSpawned += fighter_OnWeaponSpawned;
+      }
 
       private void Start()
       {
@@ -35,6 +39,12 @@ namespace RPG.Control
          fighter.OnAttackCanceled += fighter_OnAttackCanceled;
          health.OnZeroHealth += Health_OnZeroHealth;
          health.OnLoadedDead += Health_OnLoadedDead;
+      }
+
+      private void fighter_OnWeaponSpawned(object sender, Fighter.OnAnyWeaponSpawnedEventArgs e)
+      {
+         if(e.AnimatorOverride == null) return;
+         animator.runtimeAnimatorController = e.AnimatorOverride;
       }
 
       private void Health_OnLoadedDead(object sender, EventArgs e)
