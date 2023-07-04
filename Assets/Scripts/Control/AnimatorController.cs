@@ -30,18 +30,23 @@ namespace RPG.Control
       }
       private void OnEnable()
       {
-         fighter.OnWeaponSpawned += fighter_OnWeaponSpawned;
+         fighter.OnWeaponSpawned += Fighter_OnWeaponSpawned;
       }
 
       private void Start()
       {
          fighter.OnAttack += Fighter_OnAttack;
-         fighter.OnAttackCanceled += fighter_OnAttackCanceled;
+         fighter.OnAttackCanceled += Fighter_OnAttackCanceled;
          health.OnZeroHealth += Health_OnZeroHealth;
          health.OnLoadedDead += Health_OnLoadedDead;
       }
 
-      private void fighter_OnWeaponSpawned(object sender, Fighter.OnAnyWeaponSpawnedEventArgs e)
+      private void Update()
+      {
+         UpdateMovement(mover.GetMovementSpeed());      
+      }
+      
+      private void Fighter_OnWeaponSpawned(object sender, Fighter.OnAnyWeaponSpawnedEventArgs e)
       {
          if(e.AnimatorOverride == null) return;
          animator.runtimeAnimatorController = e.AnimatorOverride;
@@ -52,7 +57,7 @@ namespace RPG.Control
          animator.Play(DEATH);
       }
 
-      private void fighter_OnAttackCanceled(object sender, EventArgs e)
+      private void Fighter_OnAttackCanceled(object sender, EventArgs e)
       {
          animator.ResetTrigger(ATTACK);
          animator.SetTrigger(CANCEL_ATTACK);
@@ -67,11 +72,6 @@ namespace RPG.Control
       {
          animator.ResetTrigger(CANCEL_ATTACK);
          animator.SetTrigger(ATTACK);
-      }
-
-      private void Update()
-      {
-         UpdateMovement(mover.GetMovementSpeed());      
       }
 
       private void UpdateMovement(float movementSpeed)
