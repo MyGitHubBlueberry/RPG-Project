@@ -1,4 +1,3 @@
-using System;
 using RPG.Core;
 using UnityEngine;
 
@@ -9,14 +8,22 @@ namespace RPG.Combat
       [SerializeField] private float speed;
 
       private Health target;
+      private float damage = 0f;
+
 
       private void Update()
       {
          if(target == null) return;
-         
 
          transform.LookAt(GetAimLocation());
          transform.Translate(Vector3.forward * speed * Time.deltaTime);
+      } 
+
+      private void OnTriggerEnter(Collider other)
+      {
+         if(other.GetComponent<Health>() != target) return;
+         target.TakeDamage(damage);
+         Destroy(gameObject);
       }
 
       private Vector3 GetAimLocation()
@@ -29,9 +36,10 @@ namespace RPG.Combat
             (target.transform.position + Vector3.up * targetCollider.height / 2);
       }
 
-      public void SetTarget(Health target)
+      public void SetTarget(Health target, float damage)
       {
          this.target = target;
+         this.damage = damage;
       }
    }
 }
