@@ -15,6 +15,7 @@ namespace RPG.Combat
       [SerializeField] private float timeBetweenAttacks = 1f;
       [SerializeField] private GameObject weaponPrefab = null;
       [SerializeField] private Transform hand = null;
+      [SerializeField] private AnimatorOverrideController weaponOverride = null;
 
 
       private Health target;
@@ -52,6 +53,8 @@ namespace RPG.Combat
       private void SpawnWeapon()
       {
          Instantiate(weaponPrefab, hand);
+         Animator animator  = GetComponent<Animator>();
+         animator.runtimeAnimatorController = weaponOverride;
       }
 
       private void AttackBehaviour()
