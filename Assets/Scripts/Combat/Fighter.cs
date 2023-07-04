@@ -15,8 +15,6 @@ namespace RPG.Combat
          public AnimatorOverrideController AnimatorOverride { get; set; }
       }
 
-      [SerializeField] private float weaponRange = 2f;
-      [SerializeField] private float weaponDamage = 5f;
       [SerializeField] private float timeBetweenAttacks = 1f;
       [SerializeField] private Transform hand = null;
       [SerializeField] private Weapon weapon = null;
@@ -80,12 +78,12 @@ namespace RPG.Combat
       private void Hit()
       {
          if(target == null) return;
-         target.TakeDamage(weaponDamage);
+         target.TakeDamage(weapon.GetDamage());
       }
 
       private bool GetIsInRange()
       {
-         return Vector3.Distance(transform.position, target.transform.position) < weaponRange;
+         return Vector3.Distance(transform.position, target.transform.position) < weapon.GetRange();
       }
 
       public bool CanAttack(GameObject combatTarget)
