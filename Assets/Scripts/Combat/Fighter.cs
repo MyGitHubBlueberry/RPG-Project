@@ -16,7 +16,8 @@ namespace RPG.Combat
       }
 
       [SerializeField] private float timeBetweenAttacks = 1f;
-      [SerializeField] private Transform hand = null;
+      [SerializeField] private Transform rightHand = null;
+      [SerializeField] private Transform leftHand = null;
       [SerializeField] private Weapon defaultWeapon = null;
 
 
@@ -56,7 +57,7 @@ namespace RPG.Combat
       public void EquipWeapon(Weapon weapon)
       {
          currentWeapon = weapon;
-         weapon.Spawn(hand, out AnimatorOverrideController animatorOverride);
+         weapon.Spawn(rightHand, leftHand, out AnimatorOverrideController animatorOverride);
 
          OnWeaponSpawned?.Invoke(this, new OnAnyWeaponSpawnedEventArgs{
             AnimatorOverride = animatorOverride,
