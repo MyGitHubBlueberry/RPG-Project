@@ -49,7 +49,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2191800175537634929, guid: b51f9c9c194be05a1a87b259cfeb806b, type: 3}
       propertyPath: m_Name
-      value: ArcherArrow
+      value: ArrowRedProjectile
       objectReference: {fileID: 0}
     - target: {fileID: 3017616802538055412, guid: b51f9c9c194be05a1a87b259cfeb806b, type: 3}
       propertyPath: m_RootOrder
@@ -93,6 +93,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3017616802538055412, guid: b51f9c9c194be05a1a87b259cfeb806b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3068669885183184002, guid: b51f9c9c194be05a1a87b259cfeb806b, type: 3}
+      propertyPath: isHoming
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
