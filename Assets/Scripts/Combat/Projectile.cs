@@ -8,6 +8,10 @@ namespace RPG.Combat
       [SerializeField] private float speed;
       [SerializeField] private bool isHoming;
       [SerializeField] private GameObject hitEffect;
+      [SerializeField] private float maxLifeTime = 10f;
+      [SerializeField] private GameObject[] destroyOnHit;
+      [SerializeField] private float lifeAfterImpact = .5f;
+
 
       private Health target;
       private float damage = 0f;
@@ -33,12 +37,22 @@ namespace RPG.Combat
 
          target.TakeDamage(damage);
 
+         speed = 0f;
+
          if(hitEffect != null)
          {
-            Instantiate(hitEffect, GetAimLocation(), transform.rotation);
+            GameObject instantiatedEffect = Instantiate(hitEffect, GetAimLocation(), transform.rotation);
+            ParticleSystem particles = instantiatedEffect.GetComponentInChildren<ParticleSystem>();
+            float totalDuration = particles.main.duration + particles.main.startLifetime.constantMax;
+            Destroy(instantiatedEffect, totalDuration);
          }
-         
-         Destroy(gameObject);
+
+         foreach(GameObject toDestroy in destroyOnHit)
+         {
+            Destroy(toDestroy);
+         }
+
+         Destroy(gameObject, lifeAfterImpact);
       }
 
       private Vector3 GetAimLocation()
@@ -55,6 +69,8 @@ namespace RPG.Combat
       {
          this.target = target;
          this.damage = damage;
+
+         Destroy(gameObject, maxLifeTime);
       }
    }
 }
