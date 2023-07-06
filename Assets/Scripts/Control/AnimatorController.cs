@@ -48,8 +48,20 @@ namespace RPG.Control
       
       private void Fighter_OnWeaponSpawned(object sender, Fighter.OnAnyWeaponSpawnedEventArgs e)
       {
-         if(e.AnimatorOverride == null) return;
-         animator.runtimeAnimatorController = e.AnimatorOverride;
+         if (e.AnimatorOverride != null)
+         {
+            animator.runtimeAnimatorController = e.AnimatorOverride;
+         }
+         else if (IsAnimatorOverridden(out AnimatorOverrideController animatorOverride))
+         {
+            animator.runtimeAnimatorController = animatorOverride.runtimeAnimatorController;
+         }
+      }
+
+      private bool IsAnimatorOverridden(out AnimatorOverrideController animatorOverride)
+      {
+         animatorOverride = animator.runtimeAnimatorController as AnimatorOverrideController;
+         return animatorOverride != null;
       }
 
       private void Health_OnLoadedDead(object sender, EventArgs e)
