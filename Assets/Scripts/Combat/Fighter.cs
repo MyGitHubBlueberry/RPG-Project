@@ -2,10 +2,12 @@ using System;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
+using RPG.Saving;
+using Newtonsoft.Json.Linq;
 
 namespace RPG.Combat
 {
-   public class Fighter : MonoBehaviour, IAction
+   public class Fighter : MonoBehaviour, IAction, ISaveable
    {
       public event EventHandler OnAttack;
       public event EventHandler OnAttackCanceled;
@@ -34,7 +36,10 @@ namespace RPG.Combat
 
       private void Start()
       {
-         EquipWeapon(defaultWeapon);
+         if(currentWeapon == null)
+         {
+            EquipWeapon(defaultWeapon);
+         }
       }
 
       private void Update()
@@ -117,6 +122,18 @@ namespace RPG.Combat
          OnAttackCanceled?.Invoke(this, EventArgs.Empty);
          target = null;
          mover.Cancel();
+      }
+
+      public JToken CaptureAsJToken()
+      {
+         return JToken.FromObject(currentWeapon.name);
+      }
+
+      public void RestoreFromJToken(JToken state)
+      {
+         string weaponName = state.ToObject<string>();
+         Weapon weapon = Resources.Load<Weapon>(weaponName);
+         EquipWeapon(weapon);
       }
    }
 }

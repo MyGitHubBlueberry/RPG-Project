@@ -53,8 +53,9 @@ namespace RPG.SceneManagement
          SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
 
          yield return fader.FadeOut(fadeOutTime);
-
+         
          savingWrapper.Save();
+         
 
          yield return SceneManager.LoadSceneAsync((int)targetScene);
 
@@ -63,10 +64,12 @@ namespace RPG.SceneManagement
          Portal destination = GetOtherPortal();
          UpdatePlayer(destination);
 
-         savingWrapper.Save();
+         //Throws error if save there
 
          yield return new WaitForSeconds(fadeWaitTime);
          yield return fader.FadeIn(fadeInTime);
+
+         savingWrapper.Save();
 
          Destroy(gameObject);
       }

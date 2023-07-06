@@ -8,7 +8,6 @@ namespace RPG.Core
    public class Health : MonoBehaviour, ISaveable
    {
       public event EventHandler OnZeroHealth;
-      public event EventHandler OnLoadedDead;
 
       [SerializeField] private float health = 100f;
 
@@ -52,7 +51,7 @@ namespace RPG.Core
       {
          if(health <= 0)
          {
-            OnLoadedDead?.Invoke(this, EventArgs.Empty);
+            Die();
          }
       }
 

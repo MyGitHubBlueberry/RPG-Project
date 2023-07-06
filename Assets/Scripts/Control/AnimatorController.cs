@@ -12,13 +12,11 @@ namespace RPG.Control
       private Mover mover;
       private Fighter fighter;
       private Health health;
+      private bool isDead;
       private const string FORWARD_SPEED = "forwardSpeed";
       private const string ATTACK = "attack";
       private const string DIE = "die";
       private const string CANCEL_ATTACK = "cancelAttack";
-
-      //State name
-      private const string DEATH = "Death";
 
 
       private void Awake()
@@ -31,18 +29,19 @@ namespace RPG.Control
       private void OnEnable()
       {
          fighter.OnWeaponSpawned += Fighter_OnWeaponSpawned;
+         health.OnZeroHealth += Health_OnZeroHealth;
       }
 
       private void Start()
       {
          fighter.OnAttack += Fighter_OnAttack;
          fighter.OnAttackCanceled += Fighter_OnAttackCanceled;
-         health.OnZeroHealth += Health_OnZeroHealth;
-         health.OnLoadedDead += Health_OnLoadedDead;
       }
 
       private void Update()
       {
+         if(health.GetIsDead()) return;
+
          UpdateMovement(mover.GetMovementSpeed());      
       }
       
@@ -64,11 +63,6 @@ namespace RPG.Control
          return animatorOverride != null;
       }
 
-      private void Health_OnLoadedDead(object sender, EventArgs e)
-      {
-         animator.Play(DEATH);
-      }
-
       private void Fighter_OnAttackCanceled(object sender, EventArgs e)
       {
          animator.ResetTrigger(ATTACK);
@@ -77,6 +71,7 @@ namespace RPG.Control
 
       private void Health_OnZeroHealth(object sender, EventArgs e)
       {
+         animator.ResetTrigger(DIE);
          animator.SetTrigger(DIE);
       }
 
