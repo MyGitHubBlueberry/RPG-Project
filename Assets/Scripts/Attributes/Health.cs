@@ -20,15 +20,6 @@ namespace RPG.Attributes
          health = GetComponent<BaseStats>().GetHealth();
       }
 
-      public void TakeDamage(float damage)
-      {
-         health = Mathf.Max(health - damage, 0f);
-         if(health == 0)
-         {
-            Die();
-         }
-      }
-
       private void Die()
       {
          if(isDead) return;
@@ -38,9 +29,31 @@ namespace RPG.Attributes
          OnZeroHealth?.Invoke(this, EventArgs.Empty);
       }
 
+      private void UpdateState()
+      {
+         if(health <= 0)
+         {
+            Die();
+         }
+      }
+
+      public void TakeDamage(float damage)
+      {
+         health = Mathf.Max(health - damage, 0f);
+         if(health == 0)
+         {
+            Die();
+         }
+      }
+
       public bool GetIsDead()
       {
          return isDead;
+      }
+
+      public float GetPercentage()
+      {
+         return health / GetComponent<BaseStats>().GetHealth()  * 100;
       }
 
       public JToken CaptureAsJToken()
@@ -53,14 +66,5 @@ namespace RPG.Attributes
          health = state.ToObject<float>();
          UpdateState();
       }
-
-      private void UpdateState()
-      {
-         if(health <= 0)
-         {
-            Die();
-         }
-      }
-
    }
 }
