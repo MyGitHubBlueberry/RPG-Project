@@ -4,6 +4,7 @@ using RPG.Movement;
 using RPG.Core;
 using RPG.Saving;
 using Newtonsoft.Json.Linq;
+using RPG.Attributes;
 
 namespace RPG.Combat
 {

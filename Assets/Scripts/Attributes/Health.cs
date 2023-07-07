@@ -2,8 +2,10 @@ using System;
 using UnityEngine;
 using Newtonsoft.Json.Linq;
 using RPG.Saving;
+using RPG.Stats;
+using RPG.Core;
 
-namespace RPG.Core
+namespace RPG.Attributes
 {
    public class Health : MonoBehaviour, ISaveable
    {
@@ -12,6 +14,11 @@ namespace RPG.Core
       [SerializeField] private float health = 100f;
 
       private bool isDead;
+
+      private void OnEnable()
+      {
+         health = GetComponent<BaseStats>().GetHealth();
+      }
 
       public void TakeDamage(float damage)
       {
