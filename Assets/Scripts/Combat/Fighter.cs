@@ -60,16 +60,6 @@ namespace RPG.Combat
          }
       }
 
-      public void EquipWeapon(Weapon weapon)
-      {
-         currentWeapon = weapon;
-         weapon.Spawn(rightHand, leftHand, out AnimatorOverrideController animatorOverride);
-
-         OnWeaponSpawned?.Invoke(this, new OnAnyWeaponSpawnedEventArgs{
-            AnimatorOverride = animatorOverride,
-         });
-      }
-
       private void AttackBehaviour()
       {
          transform.LookAt(target.transform);
@@ -106,6 +96,16 @@ namespace RPG.Combat
       {
          return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetRange();
       }
+      
+      public void EquipWeapon(Weapon weapon)
+      {
+         currentWeapon = weapon;
+         weapon.Spawn(rightHand, leftHand, out AnimatorOverrideController animatorOverride);
+
+         OnWeaponSpawned?.Invoke(this, new OnAnyWeaponSpawnedEventArgs{
+            AnimatorOverride = animatorOverride,
+         });
+      }
 
       public bool CanAttack(GameObject combatTarget)
       {
@@ -135,6 +135,11 @@ namespace RPG.Combat
          string weaponName = state.ToObject<string>();
          Weapon weapon = Resources.Load<Weapon>(weaponName);
          EquipWeapon(weapon);
+      }
+
+      public Health GetTarget()
+      {
+         return target;
       }
    }
 }
