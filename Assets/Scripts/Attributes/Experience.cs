@@ -8,11 +8,14 @@ namespace RPG.Attributes
    {
       [SerializeField] private float experience = 0f;
 
-      
-
       public void GainExperience(float experience)
       {
          this.experience += Mathf.Max(experience, 0f);
+      }
+
+      public float GetExperience()
+      {
+         return experience;
       }
       public JToken CaptureAsJToken()
       {
