@@ -9,22 +9,37 @@ namespace RPG.Stats
    public class Progression : ScriptableObject
    {
       [SerializeField] private ProgressionCharacterClass[] characterClasses;
+
+      Dictionary<CharacterClass, Dictionary<Stat,float[]>> lookupTable;
       
       public float GetStat(Stat stat,CharacterClass characterClass, int level)
       {
-         List<ProgressionCharacterClass> progressionCharacterClasses = characterClasses.ToList();
+         BuildLookup();
 
-         var statValue = from progressionCharacterClass in progressionCharacterClasses
-                           where progressionCharacterClass.characterClass == characterClass
-                           select progressionCharacterClass.stats into progressionStats
-                         from progressionStat in progressionStats
-                           where progressionStat.stat == stat
-                           where progressionStat.levels.Length >= level
-                           select progressionStat.levels[level - 1];
-         
-      
+         float[] levels = lookupTable[characterClass][stat];
 
-         return statValue.First();
+         if(levels.Length < level) return 0;
+
+         return levels[level - 1];
+      }
+
+      private void BuildLookup()
+      {
+         if(lookupTable != null) return;
+
+         lookupTable = new Dictionary<CharacterClass, Dictionary<Stat, float[]>>();
+
+         foreach(ProgressionCharacterClass progressionClass in characterClasses)
+         {
+            Dictionary<Stat, float[]> statLookupTable = new Dictionary<Stat, float[]>();
+
+            foreach(ProgressionStat progressionStat in progressionClass.stats)
+            {
+               statLookupTable.Add(progressionStat.stat, progressionStat.levels);
+            }
+
+            lookupTable.Add(progressionClass.characterClass, statLookupTable);
+         }
       }
 
       [Serializable]
