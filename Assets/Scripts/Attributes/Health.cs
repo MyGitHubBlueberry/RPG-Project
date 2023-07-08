@@ -17,7 +17,7 @@ namespace RPG.Attributes
 
       private void OnEnable()
       {
-         health = GetComponent<BaseStats>().GetHealth();
+         health = GetComponent<BaseStats>().GetStat(Stat.Health);
       }
 
       private void Die()
@@ -53,7 +53,7 @@ namespace RPG.Attributes
          
          if(experience == null) return;
 
-         float rewardXP = GetComponent<BaseStats>().GetExperienceReward();
+         float rewardXP = GetComponent<BaseStats>().GetStat(Stat.ExperienceReward);
          experience.GainExperience(rewardXP);
       }
 
@@ -64,7 +64,7 @@ namespace RPG.Attributes
 
       public float GetPercentage()
       {
-         return health / GetComponent<BaseStats>().GetHealth()  * 100;
+         return health / GetComponent<BaseStats>().GetStat(Stat.Health)  * 100;
       }
 
       public JToken CaptureAsJToken()
