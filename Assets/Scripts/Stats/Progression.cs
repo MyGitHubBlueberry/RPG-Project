@@ -15,28 +15,25 @@ namespace RPG.Stats
          List<ProgressionCharacterClass> progressionCharacterClasses = characterClasses.ToList();
 
          var progression = progressionCharacterClasses.
-                     First(progressionCharacterClass => 
-                     progressionCharacterClass.GetCharacterClass() == characterClass);
+               First(progressionCharacterClass => 
+                     progressionCharacterClass.characterClass == characterClass);
 
-         return progression.GetHealthByLevel(level);
+         // return progression.health[level -1];
+         return 0;
       }
 
       [Serializable]
       class ProgressionCharacterClass
       {
-         [SerializeField] private CharacterClass characterClass;
-         [SerializeField] private float[] health;
-
-         public CharacterClass GetCharacterClass()
-         {
-            return characterClass;
-         }
-
-         public float GetHealthByLevel(int level)
-         {
-            int index = Mathf.Max(level - 1, 0);
-            return health[index];
-         }
+         public CharacterClass characterClass;
+         public ProgressionStat[] stats;
+         //public float[] health;
+      }
+      [Serializable]
+      public class ProgressionStat
+      {
+         public Stat stat;
+         public float[] levels;
       }
    }
 }
