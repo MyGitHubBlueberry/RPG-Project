@@ -12,7 +12,7 @@ namespace RPG.Combat
 
       private void OnTriggerEnter(Collider other)
       {
-         if(other.gameObject.tag == Tag.Player.ToString())
+         if(other.CompareTag(Tag.Player.ToString()))
          {
             other.GetComponent<Fighter>().EquipWeapon(pickupWeapon);
             StartCoroutine(HideForSeconds(respawnTime));

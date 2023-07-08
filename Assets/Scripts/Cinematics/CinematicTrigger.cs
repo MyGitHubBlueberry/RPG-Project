@@ -10,7 +10,7 @@ namespace RPG.Cinematics
       bool alreadyTriggered;
       private void OnTriggerEnter(Collider other)
       {
-         if(other.gameObject.tag != Tag.Player.ToString() || alreadyTriggered) return;
+         if(!other.CompareTag(Tag.Player.ToString()) || alreadyTriggered) return;
 
          alreadyTriggered = true;
          GetComponent<PlayableDirector>().Play();
