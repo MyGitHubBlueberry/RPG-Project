@@ -25,11 +25,6 @@ namespace RPG.Attributes
       {
          UpdateDisplay();
       }
-   
-      // private void Start()
-      // {
-      //    baseStats.OnLevelUp += UpdateDisplay;
-      // }
 
       private void UpdateDisplay()
       {

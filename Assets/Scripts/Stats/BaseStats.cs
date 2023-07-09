@@ -6,21 +6,10 @@ namespace RPG.Stats
 {
    public class BaseStats : MonoBehaviour
    {
-      //public event Action OnLevelUp;
-
-
       [Range(1,99)]
       [SerializeField] private int startingLevel = 1;
       [SerializeField] private CharacterClass characterClass;
       [SerializeField] private Progression progression;
-
-      private void Update()
-      {
-         if(gameObject.CompareTag(Tag.Player.ToString()))
-         {
-            print(GetLevel());
-         }
-      }
 
       public float GetStat(Stat stat)
       {
