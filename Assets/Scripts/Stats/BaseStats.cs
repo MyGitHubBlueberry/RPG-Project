@@ -13,7 +13,14 @@ namespace RPG.Stats
       [SerializeField] private int startingLevel = 1;
       [SerializeField] private CharacterClass characterClass;
       [SerializeField] private Progression progression;
-      [SerializeField] private AnimationCurve levelCurve = new AnimationCurve();
+
+      private void Update()
+      {
+         if(gameObject.CompareTag(Tag.Player.ToString()))
+         {
+            print(GetLevel());
+         }
+      }
 
       public float GetStat(Stat stat)
       {
