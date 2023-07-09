@@ -9,12 +9,13 @@ namespace RPG.Stats
       [SerializeField] private int startingLevel = 1;
       [SerializeField] private CharacterClass characterClass;
       [SerializeField] private Progression progression;
+      [SerializeField] private AnimationCurve plot = new AnimationCurve();
 
       private void Update()
       {
          if(gameObject.CompareTag(Tag.Player.ToString()))
          {
-            print(GetLevel());
+            plot.AddKey(Time.realtimeSinceStartup, GetLevel());
          }
       }
 

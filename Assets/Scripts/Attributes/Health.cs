@@ -10,6 +10,7 @@ namespace RPG.Attributes
    public class Health : MonoBehaviour, ISaveable
    {
       public event EventHandler OnZeroHealth;
+      public event EventHandler OnHealthChanged;
 
       [SerializeField] private float health = 100f;
 
@@ -40,6 +41,9 @@ namespace RPG.Attributes
       public void TakeDamage(GameObject instigator,float damage)
       {
          health = Mathf.Max(health - damage, 0f);
+         
+         OnHealthChanged?.Invoke(this, EventArgs.Empty);
+
          if(health == 0)
          {
             Die();
