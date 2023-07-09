@@ -1,3 +1,4 @@
+using System;
 using RPG.Tags;
 using UnityEngine;
 
@@ -5,19 +6,14 @@ namespace RPG.Stats
 {
    public class BaseStats : MonoBehaviour
    {
+      //public event Action OnLevelUp;
+
+
       [Range(1,99)]
       [SerializeField] private int startingLevel = 1;
       [SerializeField] private CharacterClass characterClass;
       [SerializeField] private Progression progression;
-      [SerializeField] private AnimationCurve plot = new AnimationCurve();
-
-      private void Update()
-      {
-         if(gameObject.CompareTag(Tag.Player.ToString()))
-         {
-            plot.AddKey(Time.realtimeSinceStartup, GetLevel());
-         }
-      }
+      [SerializeField] private AnimationCurve levelCurve = new AnimationCurve();
 
       public float GetStat(Stat stat)
       {
