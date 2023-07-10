@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 1973963550068175901}
   - component: {fileID: 3389775901069262057}
   - component: {fileID: 546025820334511020}
+  - component: {fileID: 7709967745340975393}
   m_Layer: 0
   m_Name: Impact Effect
   m_TagString: Untagged
@@ -4902,3 +4903,16 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &7709967745340975393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279567358340848772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869f6a8def3667fad86f43cbb815f40c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetToDestroy: {fileID: 250291612062181629}

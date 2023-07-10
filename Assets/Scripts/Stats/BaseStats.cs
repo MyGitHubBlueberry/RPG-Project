@@ -9,9 +9,13 @@ namespace RPG.Stats
       [SerializeField] private int startingLevel = 1;
       [SerializeField] private CharacterClass characterClass;
       [SerializeField] private Progression progression;
+      [SerializeField] private GameObject levelUpParticleEffect;
+      
+      public event Action OnLevelUp;
 
       private Experience experience;
       private int currentLevel = 0;
+
 
 
       private void Awake()
@@ -34,8 +38,14 @@ namespace RPG.Stats
          if(newLevel > currentLevel)
          {
             currentLevel = newLevel;
-            print("Levelled Up!");
+            InstantiateLevelUpEffect();
+            OnLevelUp?.Invoke();
          }
+      }
+
+      private void InstantiateLevelUpEffect()
+      {
+         Instantiate(levelUpParticleEffect, transform);
       }
 
       public float GetStat(Stat stat)

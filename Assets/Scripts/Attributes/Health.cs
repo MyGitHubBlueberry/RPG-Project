@@ -9,6 +9,8 @@ namespace RPG.Attributes
 {
    public class Health : MonoBehaviour, ISaveable
    {
+      [SerializeField] private float regenerationPercentage = 70;
+
       public event EventHandler OnZeroHealth;
 
       private float health = -1f;
@@ -16,10 +18,18 @@ namespace RPG.Attributes
 
       private void Start()
       {
+         GetComponent<BaseStats>().OnLevelUp += RegenerateHealth;
+
          if(health < 0)
          {
             health = GetComponent<BaseStats>().GetStat(Stat.Health);
          }
+      }
+
+      private void RegenerateHealth()
+      {
+         float regenHealthPoints = GetMaxHealth() * regenerationPercentage / 100;
+         health = (GetPercentage() > regenerationPercentage) ? health : regenHealthPoints;
       }
 
       private void Die()
@@ -39,16 +49,6 @@ namespace RPG.Attributes
          }
       }
 
-      public void TakeDamage(GameObject instigator,float damage)
-      {
-         health = Mathf.Max(health - damage, 0f);
-         if(health == 0)
-         {
-            Die();
-            AwardExperience(instigator);
-         }
-      }
-
       private void AwardExperience(GameObject instigator)
       {
          Experience experience = instigator.GetComponent<Experience>();
@@ -59,6 +59,16 @@ namespace RPG.Attributes
          experience.GainExperience(rewardXP);
       }
 
+      public void TakeDamage(GameObject instigator,float damage)
+      {
+         health = Mathf.Max(health - damage, 0f);
+         if(health == 0)
+         {
+            Die();
+            AwardExperience(instigator);
+         }
+      }
+
       public bool GetIsDead()
       {
          return isDead;
@@ -66,7 +76,12 @@ namespace RPG.Attributes
 
       public float GetPercentage()
       {
-         return health / GetComponent<BaseStats>().GetStat(Stat.Health)  * 100;
+         return health / GetMaxHealth() * 100;
+      }
+
+      private float GetMaxHealth()
+      {
+         return GetComponent<BaseStats>().GetStat(Stat.Health);
       }
 
       public JToken CaptureAsJToken()
