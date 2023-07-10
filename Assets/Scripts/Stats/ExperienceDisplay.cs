@@ -31,5 +31,10 @@ namespace RPG.Stats
          experienceText.text = stringBuilder.ToString();
          stringBuilder.Remove(startBuilderLength, xpAmount.Length);
       }
+
+      private void OnDisable()
+      {
+         experience.OnExperienceGained -= UpdateDisplay;
+      }
    }
 }

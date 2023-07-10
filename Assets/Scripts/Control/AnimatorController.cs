@@ -44,6 +44,12 @@ namespace RPG.Control
 
          UpdateMovement(mover.GetMovementSpeed());      
       }
+
+      private void OnDisable()
+      {
+         fighter.OnWeaponSpawned -= Fighter_OnWeaponSpawned;
+         health.OnZeroHealth -= Health_OnZeroHealth;
+      }
       
       private void Fighter_OnWeaponSpawned(object sender, Fighter.OnAnyWeaponSpawnedEventArgs e)
       {
