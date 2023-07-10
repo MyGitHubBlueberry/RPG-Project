@@ -28,6 +28,7 @@ namespace RPG.Stats
       public void RestoreFromJToken(JToken state)
       {
          experience = state.ToObject<float>();
+         OnExperienceGained?.Invoke();
       }
    }
 }

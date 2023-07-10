@@ -19,7 +19,7 @@ namespace RPG.Stats
          startBuilderLength = stringBuilder.Length;
       }
 
-      private void Start()
+      private void OnEnable()
       {
          experience.OnExperienceGained += UpdateDisplay;
       }

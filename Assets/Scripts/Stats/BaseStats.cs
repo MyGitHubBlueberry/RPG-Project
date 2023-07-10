@@ -17,11 +17,11 @@ namespace RPG.Stats
       private void Awake()
       {
          experience = GetComponent<Experience>();
-         currentLevel = CalculateLevel();
       }
 
       private void Start()
       {
+         currentLevel = CalculateLevel();
          if(experience != null)
          {
             experience.OnExperienceGained += UpdateLevel;
