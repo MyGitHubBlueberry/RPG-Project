@@ -61,6 +61,9 @@ namespace RPG.Attributes
 
       public void TakeDamage(GameObject instigator,float damage)
       {
+         //TODO remove
+         print(gameObject.name + " took damage: " + damage);
+         //TODO remove
          health = Mathf.Max(health - damage, 0f);
          if(health == 0)
          {
@@ -79,9 +82,14 @@ namespace RPG.Attributes
          return health / GetMaxHealth() * 100;
       }
 
-      private float GetMaxHealth()
+      public float GetMaxHealth()
       {
          return GetComponent<BaseStats>().GetStat(Stat.Health);
+      }
+
+      public float GetHealth()
+      {
+         return health;
       }
 
       public JToken CaptureAsJToken()

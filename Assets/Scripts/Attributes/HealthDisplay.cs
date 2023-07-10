@@ -23,7 +23,7 @@ namespace RPG.Attributes
 
       private void Update()
       {
-         string healthPersent = $"{health.GetPercentage():0}%";
+         string healthPersent = $"{health.GetHealth():0}/{health.GetMaxHealth():0}";
          stringBuilder.Append(healthPersent);
          healthText.text = stringBuilder.ToString();
          stringBuilder.Remove(startBuilderLength, healthPersent.Length);
