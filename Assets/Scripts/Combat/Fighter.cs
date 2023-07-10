@@ -100,11 +100,19 @@ namespace RPG.Combat
          return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetRange();
       }
 
-      public IEnumerable<float> GetAddetiveMidifier(Stat stat)
+      public IEnumerable<float> GetAdditiveModifiers(Stat stat)
       {
          if(stat == Stat.Damage)
          {
             yield return currentWeapon.GetDamage();
+         }
+      }
+
+      public IEnumerable<float> GetPersantageModifiers(Stat stat)
+      {
+         if(stat == Stat.Damage)
+         {
+            yield return currentWeapon.GetPersantageBonus();
          }
       }
       
@@ -152,5 +160,6 @@ namespace RPG.Combat
       {
          return target;
       }
+
    }
 }

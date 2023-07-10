@@ -12,6 +12,7 @@ namespace RPG.Combat
       [SerializeField] private AnimatorOverrideController animatorOverride = null;
       [SerializeField] private GameObject equippedPrefab = null;
       [SerializeField] private float damage = 5f;
+      [SerializeField] private float persantageBonus = 0f;
       [SerializeField] private float range = 2f;
       [SerializeField] private bool isRightHanded = true;
       [SerializeField] private Projectile projectile = null;
@@ -64,6 +65,11 @@ namespace RPG.Combat
       public float GetDamage()
       {
          return damage;
+      }
+
+      public float GetPersantageBonus()
+      {
+         return persantageBonus;
       }
    }
 }

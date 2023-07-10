@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static RPG.Stats.IModifierProvider;
 
 namespace RPG.Stats
 {
@@ -10,6 +11,7 @@ namespace RPG.Stats
       [SerializeField] private CharacterClass characterClass;
       [SerializeField] private Progression progression;
       [SerializeField] private GameObject levelUpParticleEffect;
+      [SerializeField] private bool shouldUseModifiers;
       
       public event Action OnLevelUp;
 
@@ -65,21 +67,30 @@ namespace RPG.Stats
       {
          Instantiate(levelUpParticleEffect, transform);
       }
-      private float GetAdditionalModifier(Stat stat)
+      
+      private float GetModifiers(Stat stat, Modifier modifier)
       {
+         if(!shouldUseModifiers) return 0;
+         
          float total = 0;
          foreach(IModifierProvider provider in GetComponents<IModifierProvider>())
          {
-            foreach(float modifier in provider.GetAddetiveMidifier(stat))
+            foreach(float modifierValue in provider.GetModifiers(stat, modifier))
             {
-               total += modifier;
+               total += modifierValue;
             }
          }
          return total;
       }
+
+      private float GetBaseStat(Stat stat)
+      {
+         return progression.GetStat(stat, characterClass, GetLevel());
+      }
+
       public float GetStat(Stat stat)
       {
-         return progression.GetStat(stat, characterClass, GetLevel()) + GetAdditionalModifier(stat);
+         return (GetBaseStat(stat) + GetModifiers(stat, Modifier.Additive)) * (1 + GetModifiers(stat, Modifier.Persantage)/100);
       }
 
       public int GetLevel()
