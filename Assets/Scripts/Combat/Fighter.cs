@@ -6,10 +6,11 @@ using RPG.Saving;
 using Newtonsoft.Json.Linq;
 using RPG.Attributes;
 using RPG.Stats;
+using System.Collections.Generic;
 
 namespace RPG.Combat
 {
-   public class Fighter : MonoBehaviour, IAction, ISaveable
+   public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider
    {
       public event EventHandler OnAttack;
       public event EventHandler OnAttackCanceled;
@@ -72,7 +73,7 @@ namespace RPG.Combat
          }
       }
 
-      #region Animation events
+#region Animation events
       private void Hit()
       {
          if(target == null) return;
@@ -92,11 +93,19 @@ namespace RPG.Combat
       {
          Hit();
       }
-      #endregion
+#endregion
 
       private bool GetIsInRange()
       {
          return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetRange();
+      }
+
+      public IEnumerable<float> GetAddetiveMidifier(Stat stat)
+      {
+         if(stat == Stat.Damage)
+         {
+            yield return currentWeapon.GetDamage();
+         }
       }
       
       public void EquipWeapon(Weapon weapon)

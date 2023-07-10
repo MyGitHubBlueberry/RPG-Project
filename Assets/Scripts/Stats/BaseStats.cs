@@ -32,28 +32,7 @@ namespace RPG.Stats
          }
       }
 
-      private void UpdateLevel()
-      {
-         int newLevel = CalculateLevel();
-         if(newLevel > currentLevel)
-         {
-            currentLevel = newLevel;
-            InstantiateLevelUpEffect();
-            OnLevelUp?.Invoke();
-         }
-      }
-
-      private void InstantiateLevelUpEffect()
-      {
-         Instantiate(levelUpParticleEffect, transform);
-      }
-
-      public float GetStat(Stat stat)
-      {
-         return progression.GetStat(stat, characterClass, GetLevel());
-      }
-
-      public int CalculateLevel()
+      private int CalculateLevel()
       {
          if(!TryGetComponent<Experience>(out Experience experience)) return startingLevel;
 
@@ -69,6 +48,38 @@ namespace RPG.Stats
          }
 
          return penultimateLevel + 1;
+      }
+
+      private void UpdateLevel()
+      {
+         int newLevel = CalculateLevel();
+         if(newLevel > currentLevel)
+         {
+            currentLevel = newLevel;
+            InstantiateLevelUpEffect();
+            OnLevelUp?.Invoke();
+         }
+      }
+
+      private void InstantiateLevelUpEffect()
+      {
+         Instantiate(levelUpParticleEffect, transform);
+      }
+      private float GetAdditionalModifier(Stat stat)
+      {
+         float total = 0;
+         foreach(IModifierProvider provider in GetComponents<IModifierProvider>())
+         {
+            foreach(float modifier in provider.GetAddetiveMidifier(stat))
+            {
+               total += modifier;
+            }
+         }
+         return total;
+      }
+      public float GetStat(Stat stat)
+      {
+         return progression.GetStat(stat, characterClass, GetLevel()) + GetAdditionalModifier(stat);
       }
 
       public int GetLevel()
