@@ -1,5 +1,4 @@
 using System;
-using RPG.Tags;
 using UnityEngine;
 
 namespace RPG.Stats
@@ -11,12 +10,40 @@ namespace RPG.Stats
       [SerializeField] private CharacterClass characterClass;
       [SerializeField] private Progression progression;
 
+      private Experience experience;
+      private int currentLevel = 0;
+
+
+      private void Awake()
+      {
+         experience = GetComponent<Experience>();
+         currentLevel = CalculateLevel();
+      }
+
+      private void Start()
+      {
+         if(experience != null)
+         {
+            experience.OnExperienceGained += UpdateLevel;
+         }
+      }
+
+      private void UpdateLevel()
+      {
+         int newLevel = CalculateLevel();
+         if(newLevel > currentLevel)
+         {
+            currentLevel = newLevel;
+            print("Levelled Up!");
+         }
+      }
+
       public float GetStat(Stat stat)
       {
          return progression.GetStat(stat, characterClass, GetLevel());
       }
 
-      public int GetLevel()
+      public int CalculateLevel()
       {
          if(!TryGetComponent<Experience>(out Experience experience)) return startingLevel;
 
@@ -32,6 +59,11 @@ namespace RPG.Stats
          }
 
          return penultimateLevel + 1;
+      }
+
+      public int GetLevel()
+      {
+         return currentLevel;
       }
    }
 }

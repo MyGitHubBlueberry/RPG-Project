@@ -7,13 +7,14 @@ namespace RPG.Stats
 {   
    public class Experience : MonoBehaviour, ISaveable
    {
-       public event Action OnExperienceChanged;
       [SerializeField] private float experience = 0f;
+
+      public event Action OnExperienceGained;
 
       public void GainExperience(float experience)
       {
          this.experience += Mathf.Max(experience, 0f);
-         OnExperienceChanged?.Invoke();
+         OnExperienceGained?.Invoke();
       }
 
       public float GetExperience()

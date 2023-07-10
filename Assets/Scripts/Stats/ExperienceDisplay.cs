@@ -21,12 +21,7 @@ namespace RPG.Stats
 
       private void Start()
       {
-         experience.OnExperienceChanged += Experience_OnExperienceChanged;
-      }
-
-      private void Experience_OnExperienceChanged()
-      {
-         UpdateDisplay();
+         experience.OnExperienceGained += UpdateDisplay;
       }
 
       private void UpdateDisplay()

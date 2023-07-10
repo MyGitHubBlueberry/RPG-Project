@@ -11,13 +11,15 @@ namespace RPG.Attributes
    {
       public event EventHandler OnZeroHealth;
 
-      [SerializeField] private float health = 100f;
-
+      private float health = -1f;
       private bool isDead;
 
-      private void OnEnable()
+      private void Start()
       {
-         health = GetComponent<BaseStats>().GetStat(Stat.Health);
+         if(health < 0)
+         {
+            health = GetComponent<BaseStats>().GetStat(Stat.Health);
+         }
       }
 
       private void Die()
