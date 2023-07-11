@@ -21,11 +21,14 @@ namespace RPG.Movement
          health = GetComponent<Health>();
       }
 
-      private void Start()
+      private void OnEnable()
       {
          GetComponent<Health>().OnZeroHealth += Health_OnZeroHealth;
+      }
 
-         if(health.GetIsDead()) Health_OnZeroHealth();
+      private void OnDisable()
+      {
+         GetComponent<Health>().OnZeroHealth -= Health_OnZeroHealth;
       }
 
       private void Health_OnZeroHealth()

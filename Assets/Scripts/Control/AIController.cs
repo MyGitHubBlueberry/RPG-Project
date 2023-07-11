@@ -56,7 +56,6 @@ namespace RPG.Control
          }
 
          UpdateTimers();
-
       }
 
       private void UpdateTimers()

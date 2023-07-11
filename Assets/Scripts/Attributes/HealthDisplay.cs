@@ -21,11 +21,18 @@ namespace RPG.Attributes
          startBuilderLength = stringBuilder.Length;
       }
 
-      private void Start()
+      private void OnEnable()
       {
          health.OnHealthChanged += UpdateDispaly;
-         
-         UpdateDispaly();
+         health.OnZeroHealth += UpdateDispaly;
+      }
+
+      private void Start() => UpdateDispaly();
+
+      private void OnDisable()
+      {
+         health.OnHealthChanged -= UpdateDispaly;
+         health.OnZeroHealth -= UpdateDispaly;
       }
 
       private void UpdateDispaly()

@@ -16,15 +16,23 @@ namespace RPG.Attributes
 
       private float health = -1f;
       private bool isDead;
+      
+      private void OnEnable()
+      {
+         GetComponent<BaseStats>().OnLevelUp += RegenerateHealth;
+      }
 
       private void Start()
       {
-         GetComponent<BaseStats>().OnLevelUp += RegenerateHealth;
-
          if(health < 0)
          {
             health = GetComponent<BaseStats>().GetStat(Stat.Health);
          }
+      }
+
+      private void OnDisable()
+      {
+         GetComponent<BaseStats>().OnLevelUp -= RegenerateHealth;
       }
 
       private void RegenerateHealth()

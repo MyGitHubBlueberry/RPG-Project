@@ -21,21 +21,28 @@ namespace RPG.Combat
          startBuilderLength = stringBuilder.Length;
       }
 
-      private void Start()
+      private void OnEnable()
       {
-         fighter.OnTargetSet += () =>
-         {
-            UpdateDisplay();
-            targetHealth.OnHealthChanged += UpdateDisplay;
-         };
+         fighter.OnTargetSet += UpdateDisplayAndSubscribe;
+         fighter.OnAttackCanceled += UnsubscribeAndUpdateDisplay;         
+      }
 
-         fighter.OnAttackCanceled +=  () =>
-         {
-            targetHealth.OnHealthChanged -= UpdateDisplay;
-            UpdateDisplay();
-         };
+      private void OnDisable()
+      {
+         fighter.OnTargetSet -= UpdateDisplayAndSubscribe;
+         fighter.OnAttackCanceled -= UnsubscribeAndUpdateDisplay;
+      }
 
+      private void UnsubscribeAndUpdateDisplay()
+      {
+         targetHealth.OnHealthChanged -= UpdateDisplay;
          UpdateDisplay();
+      }
+
+      private void UpdateDisplayAndSubscribe()
+      {
+         UpdateDisplay();
+         targetHealth.OnHealthChanged += UpdateDisplay;
       }
 
       private void UpdateDisplay()

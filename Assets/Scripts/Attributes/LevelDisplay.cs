@@ -20,12 +20,19 @@ namespace RPG.Attributes
          levelText = GetComponent<TextMeshProUGUI>();
          startBuilderLength = stringBuilder.Length;
       }
-
-      private void Start()
+      
+      private void OnEnable()
       {
          baseStats.OnLevelUp += UpdateDisplay;
-         
-         UpdateDisplay();
+         baseStats.OnRestoreLevel += UpdateDisplay;
+      }
+
+      private void Start() => UpdateDisplay();
+
+      private void OnDisable()
+      {
+         baseStats.OnLevelUp -= UpdateDisplay;
+         baseStats.OnRestoreLevel -= UpdateDisplay;
       }
 
       private void UpdateDisplay()

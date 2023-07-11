@@ -30,10 +30,6 @@ namespace RPG.Control
       {
          fighter.OnWeaponSpawned += Fighter_OnWeaponSpawned;
          health.OnZeroHealth += Health_OnZeroHealth;
-      }
-
-      private void Start()
-      {
          fighter.OnAttack += Fighter_OnAttack;
          fighter.OnAttackCanceled += Fighter_OnAttackCanceled;
       }
@@ -49,6 +45,8 @@ namespace RPG.Control
       {
          fighter.OnWeaponSpawned -= Fighter_OnWeaponSpawned;
          health.OnZeroHealth -= Health_OnZeroHealth;
+         fighter.OnAttack -= Fighter_OnAttack;
+         fighter.OnAttackCanceled -= Fighter_OnAttackCanceled;
       }
       
       private void Fighter_OnWeaponSpawned(object sender, Fighter.OnAnyWeaponSpawnedEventArgs e)

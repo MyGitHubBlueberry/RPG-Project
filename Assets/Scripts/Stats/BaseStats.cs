@@ -14,29 +14,41 @@ namespace RPG.Stats
       [SerializeField] private bool shouldUseModifiers;
       
       public event Action OnLevelUp;
+      public event Action OnRestoreLevel;
 
       private Experience experience;
       private int currentLevel = 0;
-
-
 
       private void Awake()
       {
          experience = GetComponent<Experience>();
       }
 
+      private void OnEnable()
+      {
+         if(experience != null)
+         {
+            experience.OnExperienceGained += GainLevel;
+            experience.OnExperienceRestored += RestoreLevel;
+         }
+      }
+
       private void Start()
       {
          currentLevel = CalculateLevel();
+      }
+      private void OnDisable()
+      {
          if(experience != null)
          {
-            experience.OnExperienceGained += UpdateLevel;
+            experience.OnExperienceGained -= GainLevel;
+            experience.OnExperienceRestored -= RestoreLevel;
          }
       }
 
       private int CalculateLevel()
       {
-         if(!TryGetComponent<Experience>(out Experience experience)) return startingLevel;
+         if(experience == null) return startingLevel;
 
          float currentXP = experience.GetExperience();
          int penultimateLevel = progression.GetPenultimateLevel(Stat.ExperienceToLevelUp, characterClass);
@@ -52,15 +64,29 @@ namespace RPG.Stats
          return penultimateLevel + 1;
       }
 
-      private void UpdateLevel()
+      private void GainLevel()
+      {
+         if(UpdateLevel()) 
+         {
+            OnLevelUp?.Invoke();
+            InstantiateLevelUpEffect();
+         }
+      }
+
+      private void RestoreLevel()
+      {
+         UpdateLevel();
+         OnRestoreLevel?.Invoke();
+      }
+      private bool UpdateLevel()
       {
          int newLevel = CalculateLevel();
          if(newLevel > currentLevel)
          {
             currentLevel = newLevel;
-            InstantiateLevelUpEffect();
-            OnLevelUp?.Invoke();
+            return true;
          }
+         return false;
       }
 
       private void InstantiateLevelUpEffect()

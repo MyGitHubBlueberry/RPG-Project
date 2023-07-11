@@ -15,20 +15,16 @@ namespace RPG.Cinematics
          player = GameObject.FindWithTag(Tag.Player.ToString());         
       }
 
-      private void Start()
+      private void OnEnable()
       {
-         GetComponent<PlayableDirector>().played +=  PlayableDirector_played;
-         GetComponent<PlayableDirector>().stopped +=  PlayableDirector_stopped;
+         GetComponent<PlayableDirector>().played += _ => DisableControl();
+         GetComponent<PlayableDirector>().stopped += _ => EnabeControl();
       }
 
-      private void PlayableDirector_stopped(PlayableDirector director)
+      private void OnDisable()
       {
-         EnabeControl();
-      }
-
-      private void PlayableDirector_played(PlayableDirector director)
-      {
-         DisableControl();
+         GetComponent<PlayableDirector>().played -= _ => DisableControl();
+         GetComponent<PlayableDirector>().stopped -= _ => EnabeControl();
       }
 
       private void DisableControl()

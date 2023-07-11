@@ -10,6 +10,8 @@ namespace RPG.Stats
       [SerializeField] private float experience = 0f;
 
       public event Action OnExperienceGained;
+      public event Action OnExperienceRestored;
+
 
       public void GainExperience(float experience)
       {
@@ -28,7 +30,7 @@ namespace RPG.Stats
       public void RestoreFromJToken(JToken state)
       {
          experience = state.ToObject<float>();
-         OnExperienceGained?.Invoke();
+         OnExperienceRestored?.Invoke();
       }
    }
 }

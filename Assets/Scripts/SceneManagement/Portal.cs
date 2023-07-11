@@ -34,7 +34,7 @@ namespace RPG.SceneManagement
 
       private void OnTriggerEnter(Collider other)
       {
-         if(other.CompareTag(Tag.Player.ToString())) return;
+         if(!other.CompareTag(Tag.Player.ToString())) return;
          
          StartCoroutine(Transition());
       }
