@@ -1,3 +1,4 @@
+using System.Text;
 using RPG.Attributes;
 using RPG.Tags;
 using TMPro;
@@ -7,28 +8,49 @@ namespace RPG.Combat
 {
    public class EnemyHealthDisplay : MonoBehaviour
    {
-      private const string ENEMY_LABEL = "Enemy: ";
-
+      private StringBuilder stringBuilder = new StringBuilder("Enemy: ", 11);
+      private int startBuilderLength;
       private Fighter fighter;
-      private Health health;
+      private Health targetHealth;
       private TextMeshProUGUI healthText;
 
       private void Awake()
       {
          fighter = GameObject.FindGameObjectWithTag(Tag.Player.ToString()).GetComponent<Fighter>();
          healthText = GetComponent<TextMeshProUGUI>();
+         startBuilderLength = stringBuilder.Length;
       }
 
-      private void Update()
+      private void Start()
       {
-         health = fighter.GetTarget();
+         fighter.OnTargetSet += () =>
+         {
+            UpdateDisplay();
+            targetHealth.OnHealthChanged += UpdateDisplay;
+         };
 
-         healthText.text = string.Format(ENEMY_LABEL + GetDisplayValue());
+         fighter.OnAttackCanceled +=  () =>
+         {
+            targetHealth.OnHealthChanged -= UpdateDisplay;
+            UpdateDisplay();
+         };
+
+         UpdateDisplay();
+      }
+
+      private void UpdateDisplay()
+      {
+         this.targetHealth = fighter.GetTarget();
+
+         string target = GetDisplayValue();
+         stringBuilder.Append(target);
+         healthText.text = stringBuilder.ToString();
+         stringBuilder.Remove(startBuilderLength, target.Length);
       }
 
       private string GetDisplayValue()
       {
-         return ((health != null) ? $"{health.GetPercentage():0}%" : "N/A");
+         return ((targetHealth != null) ? $"{targetHealth.GetPercentage():0}%" : "N/A");
       }
    }
 }

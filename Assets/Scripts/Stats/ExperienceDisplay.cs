@@ -7,7 +7,7 @@ namespace RPG.Stats
 {
    public class ExperienceDisplay : MonoBehaviour
    {
-       private StringBuilder stringBuilder = new StringBuilder("XP: ", 10);
+      private StringBuilder stringBuilder = new StringBuilder("XP: ", 10);
       private Experience experience;
       private TextMeshProUGUI experienceText;
       private int startBuilderLength;
@@ -19,9 +19,11 @@ namespace RPG.Stats
          startBuilderLength = stringBuilder.Length;
       }
 
-      private void OnEnable()
+      private void Start()
       {
          experience.OnExperienceGained += UpdateDisplay;
+
+         UpdateDisplay();         
       }
 
       private void UpdateDisplay()
@@ -30,11 +32,6 @@ namespace RPG.Stats
          stringBuilder.Append(xpAmount);
          experienceText.text = stringBuilder.ToString();
          stringBuilder.Remove(startBuilderLength, xpAmount.Length);
-      }
-
-      private void OnDisable()
-      {
-         experience.OnExperienceGained -= UpdateDisplay;
       }
    }
 }

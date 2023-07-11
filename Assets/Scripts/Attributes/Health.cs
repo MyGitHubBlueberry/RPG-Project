@@ -11,7 +11,8 @@ namespace RPG.Attributes
    {
       [SerializeField] private float regenerationPercentage = 70;
 
-      public event EventHandler OnZeroHealth;
+      public event Action OnZeroHealth;
+      public event Action OnHealthChanged;
 
       private float health = -1f;
       private bool isDead;
@@ -30,6 +31,8 @@ namespace RPG.Attributes
       {
          float regenHealthPoints = GetMaxHealth() * regenerationPercentage / 100;
          health = (GetPercentage() > regenerationPercentage) ? health : regenHealthPoints;
+
+         OnHealthChanged?.Invoke();
       }
 
       private void Die()
@@ -38,7 +41,7 @@ namespace RPG.Attributes
 
          isDead = true;
          GetComponent<ActionScheduler>().CancelCurrentAction();
-         OnZeroHealth?.Invoke(this, EventArgs.Empty);
+         OnZeroHealth?.Invoke();
       }
 
       private void UpdateState()
@@ -61,10 +64,10 @@ namespace RPG.Attributes
 
       public void TakeDamage(GameObject instigator,float damage)
       {
-         //TODO remove
-         print(gameObject.name + " took damage: " + damage);
-         //TODO remove
          health = Mathf.Max(health - damage, 0f);
+         
+         OnHealthChanged?.Invoke();
+
          if(health == 0)
          {
             Die();

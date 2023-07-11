@@ -21,8 +21,10 @@ namespace RPG.Attributes
          startBuilderLength = stringBuilder.Length;
       }
 
-      private void Update()
+      private void Start()
       {
+         baseStats.OnLevelUp += UpdateDisplay;
+         
          UpdateDisplay();
       }
 

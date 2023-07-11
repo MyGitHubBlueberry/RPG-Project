@@ -12,8 +12,9 @@ namespace RPG.Combat
 {
    public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider
    {
-      public event EventHandler OnAttack;
-      public event EventHandler OnAttackCanceled;
+      public event Action OnTargetSet;
+      public event Action OnAttack;
+      public event Action OnAttackCanceled;
       public event EventHandler<OnAnyWeaponSpawnedEventArgs> OnWeaponSpawned;
       public class OnAnyWeaponSpawnedEventArgs : EventArgs
       {
@@ -68,7 +69,7 @@ namespace RPG.Combat
          if(timeSinceLastAttack > timeBetweenAttacks)
          {
             //*Listener triggers Hit() event
-            OnAttack?.Invoke(this, EventArgs.Empty);
+            OnAttack?.Invoke();
             timeSinceLastAttack = 0f;
          }
       }
@@ -135,12 +136,13 @@ namespace RPG.Combat
       {
          GetComponent<ActionScheduler>().StartAction(this);
          target = combatTarget.GetComponent<Health>();
+         OnTargetSet?.Invoke();
       }
 
       public void Cancel()
       {
-         OnAttackCanceled?.Invoke(this, EventArgs.Empty);
          target = null;
+         OnAttackCanceled?.Invoke();
          mover.Cancel();
       }
 

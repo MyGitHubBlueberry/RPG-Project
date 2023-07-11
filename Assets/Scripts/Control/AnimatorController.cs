@@ -69,19 +69,19 @@ namespace RPG.Control
          return animatorOverride != null;
       }
 
-      private void Fighter_OnAttackCanceled(object sender, EventArgs e)
+      private void Fighter_OnAttackCanceled()
       {
          animator.ResetTrigger(ATTACK);
          animator.SetTrigger(CANCEL_ATTACK);
       }
 
-      private void Health_OnZeroHealth(object sender, EventArgs e)
+      private void Health_OnZeroHealth()
       {
          animator.ResetTrigger(DIE);
          animator.SetTrigger(DIE);
       }
 
-      private void Fighter_OnAttack(object sender, EventArgs e)
+      private void Fighter_OnAttack()
       {
          animator.ResetTrigger(CANCEL_ATTACK);
          animator.SetTrigger(ATTACK);

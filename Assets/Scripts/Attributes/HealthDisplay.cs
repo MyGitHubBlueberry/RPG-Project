@@ -12,7 +12,7 @@ namespace RPG.Attributes
       private StringBuilder stringBuilder = new StringBuilder("Health: ", 13);
       private Health health;
       private TextMeshProUGUI healthText;
-       private int startBuilderLength;
+      private int startBuilderLength;
 
       private void Awake()
       {
@@ -21,7 +21,14 @@ namespace RPG.Attributes
          startBuilderLength = stringBuilder.Length;
       }
 
-      private void Update()
+      private void Start()
+      {
+         health.OnHealthChanged += UpdateDispaly;
+         
+         UpdateDispaly();
+      }
+
+      private void UpdateDispaly()
       {
          string healthPersent = $"{health.GetHealth():0}/{health.GetMaxHealth():0}";
          stringBuilder.Append(healthPersent);
