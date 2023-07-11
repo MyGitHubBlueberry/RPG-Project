@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using RPG.Saving;
 using RPG.Stats;
 using RPG.Core;
+using GameDevTV.Utils;
 
 namespace RPG.Attributes
 {
@@ -14,31 +15,34 @@ namespace RPG.Attributes
       public event Action OnZeroHealth;
       public event Action OnHealthChanged;
 
-      private float health = -1f;
+      private LazyValue<float> health;
       private bool isDead;
       
+      private void Awake()
+      {
+         health = new LazyValue<float>(GetInitialHealth);
+      }
       private void OnEnable()
       {
          GetComponent<BaseStats>().OnLevelUp += RegenerateHealth;
       }
 
-      private void Start()
-      {
-         if(health < 0)
-         {
-            health = GetComponent<BaseStats>().GetStat(Stat.Health);
-         }
-      }
+      private void Start() => health.ForceInit();
 
       private void OnDisable()
       {
          GetComponent<BaseStats>().OnLevelUp -= RegenerateHealth;
       }
+      
+      private float GetInitialHealth()
+      {
+         return GetComponent<BaseStats>().GetStat(Stat.Health);
+      }
 
       private void RegenerateHealth()
       {
          float regenHealthPoints = GetMaxHealth() * regenerationPercentage / 100;
-         health = (GetPercentage() > regenerationPercentage) ? health : regenHealthPoints;
+         health.value = (GetPercentage() > regenerationPercentage) ? health.value : regenHealthPoints;
 
          OnHealthChanged?.Invoke();
       }
@@ -54,7 +58,7 @@ namespace RPG.Attributes
 
       private void UpdateState()
       {
-         if(health <= 0)
+         if(health.value <= 0)
          {
             Die();
          }
@@ -72,11 +76,11 @@ namespace RPG.Attributes
 
       public void TakeDamage(GameObject instigator,float damage)
       {
-         health = Mathf.Max(health - damage, 0f);
+         health.value = Mathf.Max(health.value - damage, 0f);
          
          OnHealthChanged?.Invoke();
 
-         if(health == 0)
+         if(health.value == 0)
          {
             Die();
             AwardExperience(instigator);
@@ -90,7 +94,7 @@ namespace RPG.Attributes
 
       public float GetPercentage()
       {
-         return health / GetMaxHealth() * 100;
+         return health.value / GetMaxHealth() * 100;
       }
 
       public float GetMaxHealth()
@@ -100,17 +104,17 @@ namespace RPG.Attributes
 
       public float GetHealth()
       {
-         return health;
+         return health.value;
       }
 
       public JToken CaptureAsJToken()
       {
-         return JToken.FromObject(health);
+         return JToken.FromObject(health.value);
       }
 
       public void RestoreFromJToken(JToken state)
       {
-         health = state.ToObject<float>();
+         health.value = state.ToObject<float>();
          UpdateState();
       }
    }

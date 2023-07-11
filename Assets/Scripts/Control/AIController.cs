@@ -5,6 +5,7 @@ using RPG.Movement;
 using RPG.Tags;
 using UnityEngine;
 using RPG.Attributes;
+using GameDevTV.Utils;
 
 namespace RPG.Control
 {
@@ -23,7 +24,7 @@ namespace RPG.Control
       private Mover mover;
       private GameObject player;
 
-      private Vector3 guardPosition; 
+      private LazyValue<Vector3> guardPosition; 
       private float timeSinceLastSawPlayer = Mathf.Infinity;
       private float timeSinceArrivedAtWaypoint = Mathf.Infinity;
       private int currentWaypointIndex = 0;
@@ -35,7 +36,12 @@ namespace RPG.Control
          mover = GetComponent<Mover>();
          player = GameObject.FindWithTag(Tag.Player.ToString());
 
-         guardPosition = transform.position;
+         guardPosition = new LazyValue<Vector3>(GetGuardPosition);
+      }
+
+      private void Start()
+      {
+         guardPosition.ForceInit();
       }
 
       private void Update()
@@ -58,6 +64,11 @@ namespace RPG.Control
          UpdateTimers();
       }
 
+      private Vector3 GetGuardPosition()
+      {
+         return transform.position;
+      }
+
       private void UpdateTimers()
       {
          timeSinceLastSawPlayer += Time.deltaTime;
@@ -66,7 +77,7 @@ namespace RPG.Control
 
       private void PatrolBehaviour()
       {
-         Vector3 nextPosition = guardPosition;
+         Vector3 nextPosition = guardPosition.value;
 
          if(patrolPath != null)
          {

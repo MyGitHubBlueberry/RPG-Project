@@ -1,4 +1,5 @@
 using System;
+using GameDevTV.Utils;
 using UnityEngine;
 using static RPG.Stats.IModifierProvider;
 
@@ -17,11 +18,12 @@ namespace RPG.Stats
       public event Action OnRestoreLevel;
 
       private Experience experience;
-      private int currentLevel = 0;
+      private LazyValue<int> currentLevel;
 
       private void Awake()
       {
          experience = GetComponent<Experience>();
+         currentLevel = new LazyValue<int>(CalculateLevel);
       }
 
       private void OnEnable()
@@ -35,7 +37,7 @@ namespace RPG.Stats
 
       private void Start()
       {
-         currentLevel = CalculateLevel();
+         currentLevel.ForceInit();
       }
       private void OnDisable()
       {
@@ -81,9 +83,9 @@ namespace RPG.Stats
       private bool UpdateLevel()
       {
          int newLevel = CalculateLevel();
-         if(newLevel > currentLevel)
+         if(newLevel > currentLevel.value)
          {
-            currentLevel = newLevel;
+            currentLevel.value = newLevel;
             return true;
          }
          return false;
@@ -121,7 +123,7 @@ namespace RPG.Stats
 
       public int GetLevel()
       {
-         return currentLevel;
+         return currentLevel.value;
       }
    }
 }
