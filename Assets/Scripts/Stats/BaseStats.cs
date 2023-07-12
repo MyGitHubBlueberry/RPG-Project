@@ -53,11 +53,12 @@ namespace RPG.Stats
          if(experience == null) return startingLevel;
 
          float currentXP = experience.GetExperience();
-         int penultimateLevel = progression.GetPenultimateLevel(Stat.ExperienceToLevelUp, characterClass);
+         int penultimateLevel = progression.GetPenultimateLevel();
+         
          for (int level = 1; level <= penultimateLevel; level++)
          {
-            float XPToLevelUp = progression.GetStat(Stat.ExperienceToLevelUp, characterClass, level);
-            if(XPToLevelUp > currentXP)
+            float expToLevelUp = progression.GetStatEvaluation(Stat.ExperienceToLevelUp,level);
+            if(expToLevelUp > currentXP) 
             {
                return level;
             }
@@ -80,6 +81,7 @@ namespace RPG.Stats
          UpdateLevel();
          OnRestoreLevel?.Invoke();
       }
+      
       private bool UpdateLevel()
       {
          int newLevel = CalculateLevel();
@@ -111,14 +113,14 @@ namespace RPG.Stats
          return total;
       }
 
-      private float GetBaseStat(Stat stat)
+      private float GetBaseStatEvaluation(Stat stat)
       {
-         return progression.GetStat(stat, characterClass, GetLevel());
+         return progression.GetStatEvaluation(stat, GetLevel());
       }
 
       public float GetStat(Stat stat)
       {
-         return (GetBaseStat(stat) + GetModifiers(stat, Modifier.Additive)) * (1 + GetModifiers(stat, Modifier.Persantage)/100);
+         return (GetBaseStatEvaluation(stat) + GetModifiers(stat, Modifier.Additive)) * (1 + GetModifiers(stat, Modifier.Persantage)/100);
       }
 
       public int GetLevel()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace RPG.Stats
@@ -8,60 +9,56 @@ namespace RPG.Stats
    [CreateAssetMenu(fileName = "Progression", menuName = "Stats/New Progression")]
    public class Progression : ScriptableObject
    {
-      [Serializable]
-      private class ProgressionCharacterClass
-      {
-         public CharacterClass characterClass;
-         public ProgressionStat[] stats;
-      }
+      private const int PENULTIMATE_LEVEL = 99;
+
+      [SerializeField] private CharacterClass characterClass;
+      [SerializeField] private ProgressionStat[] stats;
+
+      [ExecuteAlways]
       [Serializable]
       private class ProgressionStat
       {
          public Stat stat;
-         public float[] levels;
+         public StatFormula formula;
       }
-      [SerializeField] private ProgressionCharacterClass[] characterClasses;
 
-
-      private Dictionary<CharacterClass, Dictionary<Stat,float[]>> lookupTable;
-
-
-      private void BuildLookup()
+      [Serializable]
+      private class StatFormula
       {
-         if(lookupTable != null) return;
+         [SerializeField] float level1 = 10;
+         [SerializeField] float level100 = 500;
 
-         lookupTable = new Dictionary<CharacterClass, Dictionary<Stat, float[]>>();
+         float deltaPerLevel;
+         bool isDeltaCalculated;
 
-         foreach(ProgressionCharacterClass progressionClass in characterClasses)
+         private void CalculateDelta()
          {
-            Dictionary<Stat, float[]> statLookupTable = new Dictionary<Stat, float[]>();
-
-            foreach(ProgressionStat progressionStat in progressionClass.stats)
-            {
-               statLookupTable.Add(progressionStat.stat, progressionStat.levels);
-            }
-
-            lookupTable.Add(progressionClass.characterClass, statLookupTable);
+            deltaPerLevel = deltaPerLevel = (level100 - level1) / 99;
          }
+
+         public float Evaluate(int level)
+         {
+            CalculateDelta();
+
+            level--;
+            if(level<0) level = 0;
+            return level1 + deltaPerLevel * level;
+         }
+         public int EvaluateAsInt(int level) => Mathf.RoundToInt(Evaluate(level));
       }
 
-      public float GetStat(Stat stat,CharacterClass characterClass, int level)
+      public float GetStatEvaluation(Stat stat, int level)
       {
-         BuildLookup();
+         var statEvaluation = from progressionStat in stats 
+                              where progressionStat.stat == stat
+                              select progressionStat.formula.EvaluateAsInt(level);
 
-         float[] levels = lookupTable[characterClass][stat];
-
-         if(levels.Length < level) return 0;
-
-         return levels[level - 1];
+         return statEvaluation.First();
       }
 
-      public int GetPenultimateLevel(Stat stat, CharacterClass characterClass)
+      public int GetPenultimateLevel()
       {
-         BuildLookup();
-
-         float[] levels = lookupTable[characterClass][stat];
-         return levels.Length;
+         return PENULTIMATE_LEVEL;
       }
    }
 }

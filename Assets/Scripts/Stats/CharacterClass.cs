@@ -4,7 +4,11 @@ namespace RPG.Stats
    {
       Player,
       Grunt,
-      Mage,
+      HeavySoldier,
+      Knight,
+      Minion,
+      Thug,
       Archer,
+      Mage,
    }
 }
