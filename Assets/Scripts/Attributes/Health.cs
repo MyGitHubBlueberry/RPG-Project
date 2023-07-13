@@ -5,15 +5,17 @@ using RPG.Saving;
 using RPG.Stats;
 using RPG.Core;
 using GameDevTV.Utils;
+using RPG.Animation;
 
 namespace RPG.Attributes
 {
-   public class Health : MonoBehaviour, ISaveable
+   public class Health : MonoBehaviour, ISaveable, IAnimationTriggerEvent
    {
       [SerializeField] private float regenerationPercentage = 70;
 
       public event Action OnZeroHealth;
       public event Action OnHealthChanged;
+      public event EventHandler<IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs> OnResetSetAnimationTriggerRequest;
 
       private LazyValue<float> health;
       private bool isDead;
@@ -54,6 +56,11 @@ namespace RPG.Attributes
          isDead = true;
          GetComponent<ActionScheduler>().CancelCurrentAction();
          OnZeroHealth?.Invoke();
+         OnResetSetAnimationTriggerRequest?.Invoke(this,new IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs
+         {
+            resetTriggerCondition = AnimatorTriggerConditions.die,
+            setTriggerCondition = AnimatorTriggerConditions.die,
+         });
       }
 
       private void UpdateState()

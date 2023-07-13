@@ -12,17 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b6b828329efd1d3b1272e4606d8a4b, type: 3}
   m_Name: MageProgression
   m_EditorClassIdentifier: 
-  characterClass: 1
+  characterClass: 7
+  isDependsOnProgression: 1
+  baseProgression: {fileID: 11400000, guid: 86382b06b9ae4c9f782b415d2fbd734c, type: 2}
   stats:
   - stat: 0
+    isDependsOnProgression: 1
     formula:
       level1: 30
       level100: 1515
+    statMultiplier: 0.5
   - stat: 3
+    isDependsOnProgression: 1
     formula:
       level1: 16.8
       level100: 349.44
+    statMultiplier: 2.1
   - stat: 1
+    isDependsOnProgression: 1
     formula:
       level1: 96
       level100: 4848
+    statMultiplier: 1.2

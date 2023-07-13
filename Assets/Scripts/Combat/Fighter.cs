@@ -1,38 +1,33 @@
 using System;
 using UnityEngine;
-using RPG.Movement;
-using RPG.Core;
-using RPG.Saving;
-using Newtonsoft.Json.Linq;
-using RPG.Attributes;
-using RPG.Stats;
-using System.Collections.Generic;
 using GameDevTV.Utils;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using RPG.Core;
+using RPG.Stats;
+using RPG.Saving;
+using RPG.Movement;
+using RPG.Animation;
+using RPG.Attributes;
 
 namespace RPG.Combat
 {
-   public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider
+   public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider, IAnimationTriggerEvent, IOverrideRuntimeAnimatorControllerEvent
    {
       public event Action OnTargetSet;
-      public event Action OnAttack;
       public event Action OnAttackCanceled;
-      public event EventHandler<OnAnyWeaponSpawnedEventArgs> OnWeaponSpawned;
-      public class OnAnyWeaponSpawnedEventArgs : EventArgs
-      {
-         public AnimatorOverrideController AnimatorOverride { get; set; }
-      }
+      public event EventHandler<IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs> OnResetSetAnimationTriggerRequest;
+      public event Action<AnimatorOverrideController> OnOverrideRuntimeAnimatorControllerRequest;
 
       [SerializeField] private float timeBetweenAttacks = 1f;
       [SerializeField] private Transform rightHand = null;
       [SerializeField] private Transform leftHand = null;
       [SerializeField] private Weapon defaultWeapon;
 
-
       private Health target;
       private Mover mover;
       private LazyValue<Weapon> currentWeapon;
       private float timeSinceLastAttack = Mathf.Infinity;
-
 
       private void Awake()
       {
@@ -73,8 +68,12 @@ namespace RPG.Combat
          transform.LookAt(target.transform);
          if(timeSinceLastAttack > timeBetweenAttacks)
          {
-            //*Listener triggers Hit() event
-            OnAttack?.Invoke();
+            //*Listener triggers Hit() or Shoot() event
+            OnResetSetAnimationTriggerRequest?.Invoke(this, new IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs
+            {
+               resetTriggerCondition = AnimatorTriggerConditions.cancelAttack,
+               setTriggerCondition = AnimatorTriggerConditions.attack,
+            });
             timeSinceLastAttack = 0f;
          }
       }
@@ -132,10 +131,7 @@ namespace RPG.Combat
       {
          weapon.Spawn(rightHand, leftHand, out AnimatorOverrideController animatorOverride);
 
-         OnWeaponSpawned?.Invoke(this, new OnAnyWeaponSpawnedEventArgs
-         {
-            AnimatorOverride = animatorOverride,
-         });
+         OnOverrideRuntimeAnimatorControllerRequest?.Invoke(animatorOverride);
       }
 
       public bool CanAttack(GameObject combatTarget)
@@ -154,6 +150,11 @@ namespace RPG.Combat
       {
          target = null;
          OnAttackCanceled?.Invoke();
+         OnResetSetAnimationTriggerRequest?.Invoke(this, new IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs
+         {
+            resetTriggerCondition = AnimatorTriggerConditions.attack,
+            setTriggerCondition = AnimatorTriggerConditions.cancelAttack,
+         });
          mover.Cancel();
       }
 

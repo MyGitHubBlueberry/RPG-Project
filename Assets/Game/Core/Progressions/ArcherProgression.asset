@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: ArcherProgression
   m_EditorClassIdentifier: 
   characterClass: 6
-  isDependsOnProgression: 0
-  baseProgression: {fileID: 0}
+  isDependsOnProgression: 1
+  baseProgression: {fileID: 11400000, guid: 86382b06b9ae4c9f782b415d2fbd734c, type: 2}
   stats:
   - stat: 0
-    isDependsOnProgression: 0
+    isDependsOnProgression: 1
     formula:
       level1: 42
       level100: 2121
-    statMultiplier: 1
+    statMultiplier: 0.7
   - stat: 3
-    isDependsOnProgression: 0
+    isDependsOnProgression: 1
     formula:
       level1: 12
       level100: 249.6
-    statMultiplier: 1
+    statMultiplier: 1.5
   - stat: 1
-    isDependsOnProgression: 0
+    isDependsOnProgression: 1
     formula:
       level1: 64
       level100: 3232
-    statMultiplier: 1
+    statMultiplier: 0.8

@@ -13,16 +13,24 @@ MonoBehaviour:
   m_Name: ThugProgression
   m_EditorClassIdentifier: 
   characterClass: 5
+  isDependsOnProgression: 1
+  baseProgression: {fileID: 11400000, guid: 86382b06b9ae4c9f782b415d2fbd734c, type: 2}
   stats:
   - stat: 0
+    isDependsOnProgression: 1
     formula:
       level1: 60
       level100: 3030
+    statMultiplier: 1
   - stat: 3
+    isDependsOnProgression: 1
     formula:
       level1: 4
       level100: 83.2
+    statMultiplier: 0.5
   - stat: 1
+    isDependsOnProgression: 1
     formula:
       level1: 64
       level100: 3232
+    statMultiplier: 0.75

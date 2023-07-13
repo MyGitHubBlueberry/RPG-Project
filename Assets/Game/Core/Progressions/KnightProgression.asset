@@ -13,16 +13,24 @@ MonoBehaviour:
   m_Name: KnightProgression
   m_EditorClassIdentifier: 
   characterClass: 3
+  isDependsOnProgression: 1
+  baseProgression: {fileID: 11400000, guid: 86382b06b9ae4c9f782b415d2fbd734c, type: 2}
   stats:
   - stat: 0
+    isDependsOnProgression: 1
     formula:
       level1: 120
       level100: 6060
+    statMultiplier: 2
   - stat: 3
+    isDependsOnProgression: 1
     formula:
       level1: 16
       level100: 332.8
+    statMultiplier: 2
   - stat: 1
+    isDependsOnProgression: 1
     formula:
       level1: 160
       level100: 8080
+    statMultiplier: 2

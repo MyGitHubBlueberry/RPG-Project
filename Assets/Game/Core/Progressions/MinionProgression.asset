@@ -13,16 +13,24 @@ MonoBehaviour:
   m_Name: MinionProgression
   m_EditorClassIdentifier: 
   characterClass: 4
+  isDependsOnProgression: 1
+  baseProgression: {fileID: 11400000, guid: 86382b06b9ae4c9f782b415d2fbd734c, type: 2}
   stats:
   - stat: 0
+    isDependsOnProgression: 1
     formula:
       level1: 24
       level100: 1212
+    statMultiplier: 0.4
   - stat: 3
+    isDependsOnProgression: 1
     formula:
       level1: 3.2
       level100: 66.56
+    statMultiplier: 0.4
   - stat: 1
+    isDependsOnProgression: 1
     formula:
       level1: 40
       level100: 2020
+    statMultiplier: 0.5
