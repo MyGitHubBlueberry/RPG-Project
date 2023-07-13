@@ -13,16 +13,24 @@ MonoBehaviour:
   m_Name: _BaseEnemyProgression
   m_EditorClassIdentifier: 
   characterClass: 1
+  isDependsOnProgression: 0
+  baseProgression: {fileID: 0}
   stats:
   - stat: 0
+    isDependsOnProgression: 0
     formula:
       level1: 60
       level100: 3030
+    statMultiplier: 0
   - stat: 3
+    isDependsOnProgression: 0
     formula:
       level1: 8
       level100: 166.4
+    statMultiplier: 0
   - stat: 1
+    isDependsOnProgression: 0
     formula:
       level1: 80
       level100: 4040
+    statMultiplier: 0
