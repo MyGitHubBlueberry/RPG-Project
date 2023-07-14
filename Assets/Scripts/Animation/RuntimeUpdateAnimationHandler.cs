@@ -5,9 +5,24 @@ namespace RPG.Animation
 {
    public class RuntimeUpdateAnimationHandler : MonoBehaviour
    {
-      public event Action<Action<Action<float, AnimatorParameters.Value>, Action<int, AnimatorParameters.Value>>> OnExecuteMethodsRequiered;
-      public event Action<Action<AnimatorParameters.Value, Func<bool>, Func<float>>> OnSetFloatParametersRequiered;
-      public event Action<Action<AnimatorParameters.Value, Func<bool>, Func<int>>> OnSetIntParametersRequiered;
+      public event EventHandler<OnExecuteMethodsRequieredEventArgs> OnExecuteMethodsRequiered;
+      public class OnExecuteMethodsRequieredEventArgs : EventArgs
+      {
+         public Action<Action<float, AnimatorParameters.Value>, Action<int, AnimatorParameters.Value>> SetExecuteMethods;
+      }
+      
+      public event EventHandler<OnSetFloatParametersRequieredEventArgs> OnSetFloatParametersRequiered;
+      public class OnSetFloatParametersRequieredEventArgs : EventArgs
+      {
+         public Action<AnimatorParameters.Value, Func<bool>, Func<float>> SetFloatParameters;
+      }
+
+      public event EventHandler<OnSetIntParametersRequieredEventArgs> OnSetIntParametersRequiered;
+      public class OnSetIntParametersRequieredEventArgs : EventArgs
+      {
+         public Action<AnimatorParameters.Value, Func<bool>, Func<int>> SetIntParameters;
+      }
+
       private Action<float, AnimatorParameters.Value> floatExecutor;
       private Action<int, AnimatorParameters.Value> intExecutor;
       private AnimatorParameters.Value valueParameter;
@@ -19,9 +34,18 @@ namespace RPG.Animation
 
       private void Start()
       {
-         OnExecuteMethodsRequiered?.Invoke(SetExecuteMethods);
-         OnSetFloatParametersRequiered?.Invoke(SetFlaotParameters);
-         OnSetIntParametersRequiered?.Invoke(SetIntParameters);
+         OnExecuteMethodsRequiered?.Invoke(this, new OnExecuteMethodsRequieredEventArgs 
+         {
+            SetExecuteMethods = SetExecuteMethods
+         });
+         OnSetFloatParametersRequiered?.Invoke(this, new OnSetFloatParametersRequieredEventArgs
+         {
+            SetFloatParameters = SetFloatParameters,
+         });
+         OnSetIntParametersRequiered?.Invoke(this, new OnSetIntParametersRequieredEventArgs
+         {
+            SetIntParameters = SetIntParameters,
+         });
       }
 
       private void Update()
@@ -47,7 +71,8 @@ namespace RPG.Animation
          this.condition = condition;
          isParametersSet = true;
       } 
-      public void SetFlaotParameters(AnimatorParameters.Value valueParameter, Func<bool> condition, Func<float> value)
+
+      private void SetFloatParameters(AnimatorParameters.Value valueParameter, Func<bool> condition, Func<float> value)
       {
          if(isParametersSet) return;
 
@@ -56,7 +81,7 @@ namespace RPG.Animation
          isFloatParameter = true;
       } 
 
-      public void SetIntParameters(AnimatorParameters.Value valueParameter, Func<bool> condition, Func<int> value)
+      private void SetIntParameters(AnimatorParameters.Value valueParameter, Func<bool> condition, Func<int> value)
       {
          if(isParametersSet) return;
 

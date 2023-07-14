@@ -36,13 +36,6 @@ namespace RPG.Animation
          }
       }
 
-      private void SetExecuteMethods(Action<Action<float, AnimatorParameters.Value>, Action<int, AnimatorParameters.Value>> action)
-      {
-         action.Invoke(SetFloat,SetInt);
-         
-         runtimeUpdateAnimationHandler.OnExecuteMethodsRequiered -= SetExecuteMethods;
-      }
-
       private void OnDisable()
       {
          foreach(IAnimationTriggerEvent animationEvent in animationTriggerEvents)
@@ -54,6 +47,12 @@ namespace RPG.Animation
          {
             runtimeOverride.OnOverrideRuntimeAnimatorControllerRequest -= OverrideRuntimeAnimatorController;
          }
+      }
+      private void SetExecuteMethods(object sender, RuntimeUpdateAnimationHandler.OnExecuteMethodsRequieredEventArgs e)
+      {
+         e.SetExecuteMethods(SetFloat, SetInt);
+
+         runtimeUpdateAnimationHandler.OnExecuteMethodsRequiered -= SetExecuteMethods;
       }
 
       private void ResetSetTrigger(object sender, IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs e)
@@ -73,12 +72,6 @@ namespace RPG.Animation
             animator.runtimeAnimatorController = previousAnimatorOverride.runtimeAnimatorController;
          }
       }
-      
-      private bool IsAnimatorOverridden(out AnimatorOverrideController animatorOverride)
-      {
-         animatorOverride = animator.runtimeAnimatorController as AnimatorOverrideController;
-         return animatorOverride != null;
-      }
 
       private void SetFloat(float value, AnimatorParameters.Value valueParameter)
       {
@@ -87,6 +80,12 @@ namespace RPG.Animation
       private void SetInt(int value, AnimatorParameters.Value valueParameter)
       {
          animator.SetInteger(valueParameter.ToString(), value);
+      }
+      
+      private bool IsAnimatorOverridden(out AnimatorOverrideController animatorOverride)
+      {
+         animatorOverride = animator.runtimeAnimatorController as AnimatorOverrideController;
+         return animatorOverride != null;
       }
    }
 }

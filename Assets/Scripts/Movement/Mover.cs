@@ -4,7 +4,6 @@ using RPG.Core;
 using RPG.Saving;
 using Newtonsoft.Json.Linq;
 using RPG.Attributes;
-using System;
 using RPG.Animation;
 
 namespace RPG.Movement
@@ -16,6 +15,7 @@ namespace RPG.Movement
       private Animation.RuntimeUpdateAnimationHandler updateAnimationHandler;
       private NavMeshAgent navMeshAgent;
       private Health health;
+      
 
       private void Awake()
       {
@@ -40,9 +40,9 @@ namespace RPG.Movement
          GetComponent<Health>().OnZeroHealth -= DisableNavMesh;
       }
 
-      private void SetFlaotParameters(Action<AnimatorParameters.Value, Func<bool>, Func<float>> action)
+      private void SetFlaotParameters(object sender, RuntimeUpdateAnimationHandler.OnSetFloatParametersRequieredEventArgs e)
       {
-         action.Invoke(Animation.AnimatorParameters.Value.forwardSpeed, health.IsAlive, GetMovementSpeed);
+         e.SetFloatParameters.Invoke(Animation.AnimatorParameters.Value.forwardSpeed, health.IsAlive, GetMovementSpeed);
          
          updateAnimationHandler.OnSetFloatParametersRequiered -= SetFlaotParameters;
       }
