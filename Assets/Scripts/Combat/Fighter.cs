@@ -50,7 +50,7 @@ namespace RPG.Combat
       {
          timeSinceLastAttack += Time.deltaTime;
 
-         if (target == null || target.GetIsDead()) return;
+         if (target == null || target.IsDead()) return;
 
          if (!GetIsInRange())
          {
@@ -71,8 +71,8 @@ namespace RPG.Combat
             //*Listener triggers Hit() or Shoot() event
             OnResetSetAnimationTriggerRequest?.Invoke(this, new IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs
             {
-               resetTriggerCondition = AnimatorTriggerConditions.cancelAttack,
-               setTriggerCondition = AnimatorTriggerConditions.attack,
+               resetTrigger = AnimatorParameters.Trigger.cancelAttack,
+               setTrigger = AnimatorParameters.Trigger.attack,
             });
             timeSinceLastAttack = 0f;
          }
@@ -136,7 +136,7 @@ namespace RPG.Combat
 
       public bool CanAttack(GameObject combatTarget)
       {
-         return combatTarget.GetComponent<Health>() != null && !combatTarget.GetComponent<Health>().GetIsDead();
+         return combatTarget.GetComponent<Health>() != null && combatTarget.GetComponent<Health>().IsAlive();
       }
 
       public void Attack(GameObject combatTarget)
@@ -152,8 +152,8 @@ namespace RPG.Combat
          OnAttackCanceled?.Invoke();
          OnResetSetAnimationTriggerRequest?.Invoke(this, new IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs
          {
-            resetTriggerCondition = AnimatorTriggerConditions.attack,
-            setTriggerCondition = AnimatorTriggerConditions.cancelAttack,
+            resetTrigger = AnimatorParameters.Trigger.attack,
+            setTrigger = AnimatorParameters.Trigger.cancelAttack,
          });
          mover.Cancel();
       }

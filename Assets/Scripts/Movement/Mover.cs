@@ -1,10 +1,11 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 using RPG.Core;
 using RPG.Saving;
 using Newtonsoft.Json.Linq;
 using RPG.Attributes;
+using System;
+using RPG.Animation;
 
 namespace RPG.Movement
 {
@@ -12,6 +13,7 @@ namespace RPG.Movement
    {
       [SerializeField] private float maxSpeed = 6f;
 
+      private Animation.RuntimeUpdateAnimationHandler updateAnimationHandler;
       private NavMeshAgent navMeshAgent;
       private Health health;
 
@@ -19,19 +21,33 @@ namespace RPG.Movement
       {
          navMeshAgent = GetComponent<NavMeshAgent>();
          health = GetComponent<Health>();
+         updateAnimationHandler = GetComponent<Animation.RuntimeUpdateAnimationHandler>();
       }
 
       private void OnEnable()
       {
-         GetComponent<Health>().OnZeroHealth += Health_OnZeroHealth;
+         updateAnimationHandler.OnSetFloatParametersRequiered += SetFlaotParameters;
+         GetComponent<Health>().OnZeroHealth += DisableNavMesh;
+      }
+
+      private void Update()
+      {
+         if(health.IsDead()) return;
       }
 
       private void OnDisable()
       {
-         GetComponent<Health>().OnZeroHealth -= Health_OnZeroHealth;
+         GetComponent<Health>().OnZeroHealth -= DisableNavMesh;
       }
 
-      private void Health_OnZeroHealth()
+      private void SetFlaotParameters(Action<AnimatorParameters.Value, Func<bool>, Func<float>> action)
+      {
+         action.Invoke(Animation.AnimatorParameters.Value.forwardSpeed, health.IsAlive, GetMovementSpeed);
+         
+         updateAnimationHandler.OnSetFloatParametersRequiered -= SetFlaotParameters;
+      }
+
+      private void DisableNavMesh()
       {
          navMeshAgent.enabled = false;
       }
@@ -54,7 +70,7 @@ namespace RPG.Movement
          navMeshAgent.isStopped = true;
       }
 
-      public float GetMovementSpeed()
+      private float GetMovementSpeed()
       {
          Vector3 velocity = navMeshAgent.velocity;
          Vector3 localVelocity = transform.InverseTransformDirection(velocity);

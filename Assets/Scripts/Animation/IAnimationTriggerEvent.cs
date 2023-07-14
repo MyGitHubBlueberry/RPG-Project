@@ -10,8 +10,8 @@ namespace RPG.Animation
       public event EventHandler<OnResetSetAnimationTriggerRequestEventArgs> OnResetSetAnimationTriggerRequest;
       public class OnResetSetAnimationTriggerRequestEventArgs : EventArgs
       {
-         public AnimatorTriggerConditions resetTriggerCondition;
-         public AnimatorTriggerConditions setTriggerCondition;
+         public AnimatorParameters.Trigger resetTrigger;
+         public AnimatorParameters.Trigger setTrigger;
       }
    }
 }

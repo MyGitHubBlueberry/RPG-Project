@@ -58,8 +58,8 @@ namespace RPG.Attributes
          OnZeroHealth?.Invoke();
          OnResetSetAnimationTriggerRequest?.Invoke(this,new IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs
          {
-            resetTriggerCondition = AnimatorTriggerConditions.die,
-            setTriggerCondition = AnimatorTriggerConditions.die,
+            resetTrigger = AnimatorParameters.Trigger.die,
+            setTrigger = AnimatorParameters.Trigger.die,
          });
       }
 
@@ -94,11 +94,16 @@ namespace RPG.Attributes
          }
       }
 
-      public bool GetIsDead()
+      public bool IsDead()
       {
          return isDead;
       }
 
+      public bool IsAlive()
+      {
+         return !isDead;
+      }
+      
       public float GetPercentage()
       {
          return health.value / GetMaxHealth() * 100;

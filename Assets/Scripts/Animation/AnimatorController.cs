@@ -1,33 +1,30 @@
-using UnityEngine;
-using RPG.Movement;
-using RPG.Combat;
-using RPG.Attributes;
 using System;
+using UnityEngine;
 
 namespace RPG.Animation
 {
    public class AnimatorController : MonoBehaviour
    {
-      private IAnimationTriggerEvent[] animationTriggerEvents;
       private IOverrideRuntimeAnimatorControllerEvent[] runtimeAnimatorOverrides;
+      private RuntimeUpdateAnimationHandler runtimeUpdateAnimationHandler;
+      private IAnimationTriggerEvent[] animationTriggerEvents;
       private Animator animator;
-      private Mover mover;
-      private Health health;
-      private const string FORWARD_SPEED = "forwardSpeed";
 
 
       private void Awake()
       {
+         runtimeUpdateAnimationHandler= GetComponent<RuntimeUpdateAnimationHandler>();
          animator = GetComponent<Animator>();
-         mover = GetComponent<Mover>();
-         health = GetComponent<Health>();
 
-         animationTriggerEvents = GetComponents<IAnimationTriggerEvent>();
          runtimeAnimatorOverrides = GetComponents<IOverrideRuntimeAnimatorControllerEvent>();
+         animationTriggerEvents = GetComponents<IAnimationTriggerEvent>();
       }
 
       private void OnEnable()
       {
+         runtimeUpdateAnimationHandler.OnExecuteMethodsRequiered += SetExecuteMethods;
+
+
          foreach(IAnimationTriggerEvent animationEvent in animationTriggerEvents)
          {
             animationEvent.OnResetSetAnimationTriggerRequest += ResetSetTrigger;
@@ -39,11 +36,11 @@ namespace RPG.Animation
          }
       }
 
-      private void Update()
+      private void SetExecuteMethods(Action<Action<float, AnimatorParameters.Value>, Action<int, AnimatorParameters.Value>> action)
       {
-         if(health.GetIsDead()) return;
-
-         UpdateMovement(mover.GetMovementSpeed());      
+         action.Invoke(SetFloat,SetInt);
+         
+         runtimeUpdateAnimationHandler.OnExecuteMethodsRequiered -= SetExecuteMethods;
       }
 
       private void OnDisable()
@@ -61,8 +58,8 @@ namespace RPG.Animation
 
       private void ResetSetTrigger(object sender, IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs e)
       {
-         animator.ResetTrigger(e.resetTriggerCondition.ToString());
-         animator.SetTrigger(e.setTriggerCondition.ToString());
+         animator.ResetTrigger(e.resetTrigger.ToString());
+         animator.SetTrigger(e.setTrigger.ToString());
       }
 
       private void OverrideRuntimeAnimatorController(AnimatorOverrideController animatorOverride)
@@ -83,9 +80,13 @@ namespace RPG.Animation
          return animatorOverride != null;
       }
 
-      private void UpdateMovement(float movementSpeed)
+      private void SetFloat(float value, AnimatorParameters.Value valueParameter)
       {
-         animator.SetFloat(FORWARD_SPEED, movementSpeed);
+         animator.SetFloat(valueParameter.ToString(), value);
+      }
+      private void SetInt(int value, AnimatorParameters.Value valueParameter)
+      {
+         animator.SetInteger(valueParameter.ToString(), value);
       }
    }
 }
