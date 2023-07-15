@@ -1331,7 +1331,7 @@ MonoBehaviour:
     type: 0
     texture: {fileID: 2800000, guid: 21628736160fcc9488493401da3ef621, type: 3}
     hotspot: {x: 0, y: 0}
-  - name: Combat Cursor
+  - name: UI Cursor
     type: 1
     texture: {fileID: 2800000, guid: 44a99ee545fd8ba46a452b12c1f9378b, type: 3}
     hotspot: {x: 0, y: 0}
@@ -1342,4 +1342,8 @@ MonoBehaviour:
   - name: Combat Cursor
     type: 3
     texture: {fileID: 2800000, guid: 2d18e23e3ce249b4489b8bcdd02d3f48, type: 3}
+    hotspot: {x: 0, y: 0}
+  - name: Pickup Cursor
+    type: 4
+    texture: {fileID: 2800000, guid: f8c873f1e53e83f4aabf342d6be1dfc3, type: 3}
     hotspot: {x: 0, y: 0}
