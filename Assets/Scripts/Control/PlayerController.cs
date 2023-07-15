@@ -12,6 +12,7 @@ namespace RPG.Control
    public partial class PlayerController : MonoBehaviour
    {
       [SerializeField] private float maxNavMeshProjectionDistance = 1f;
+      [SerializeField] private float maxNavMeshPathLength = 40f;
       [SerializeField] private CursorMapping[] cursorMappings;
       private Fighter fighter;
       private Health health;
@@ -106,13 +107,33 @@ namespace RPG.Control
       {
          target = new Vector3();
 
-         if (!Physics.Raycast(GetMouseRay(), out RaycastHit hit) ||
-             !NavMesh.SamplePosition(hit.point, out NavMeshHit navMeshHit,
-             maxNavMeshProjectionDistance, NavMesh.AllAreas))
-         return false;
+         bool hasHit = Physics.Raycast(GetMouseRay(), out RaycastHit hit);
+         if(!hasHit) return false;
+
+         bool hasCastToNavMesh = NavMesh.SamplePosition(hit.point, out NavMeshHit navMeshHit,
+             maxNavMeshProjectionDistance, NavMesh.AllAreas);
+         if(!hasCastToNavMesh) return false;
 
          target = navMeshHit.position;
+
+         NavMeshPath path = new NavMeshPath();
+         bool hasPath = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, path);
+         if(!hasPath)return false;
+         if(path.status != NavMeshPathStatus.PathComplete) return false;
+         if(GetPathLength(path) > maxNavMeshPathLength) return false;
+
          return true;
+      }
+
+      private float GetPathLength(NavMeshPath path)
+      {
+         float pathLength = 0;
+
+         for (int index = 0, nextIndex = 1; nextIndex < path.corners.Length; index++, nextIndex++)
+         {
+            pathLength += Vector3.Distance(path.corners[index], path.corners[nextIndex]);
+         }
+         return pathLength;
       }
 
       private void SetCursor(CursorType type)
