@@ -2,9 +2,9 @@ using UnityEngine;
 using RPG.Movement;
 using RPG.Combat;
 using RPG.Attributes;
-using System;
 using System.Linq;
 using UnityEngine.EventSystems;
+using System;
 
 namespace RPG.Control
 {
@@ -46,9 +46,19 @@ namespace RPG.Control
          SetCursor(CursorType.None);
       }
 
+      private bool InteractWithUI()
+      {
+         if(EventSystem.current.IsPointerOverGameObject())
+         {
+            SetCursor(CursorType.UI);
+            return true;
+         }
+         return false;
+      }
+
       private bool InteractWithComponent()
       {
-         RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+         RaycastHit[] hits = RaycastAllSorted();
          foreach (RaycastHit hit in hits)
          {
             IRaycastable[] raycastables = hit.transform.GetComponents<IRaycastable>();
@@ -64,14 +74,16 @@ namespace RPG.Control
          return false;
       }
 
-      private bool InteractWithUI()
+      private RaycastHit[] RaycastAllSorted()
       {
-         if(EventSystem.current.IsPointerOverGameObject())
+         RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+         float[] distances = new float[hits.Length];
+         for (int i = 0; i < distances.Length; i++)
          {
-            SetCursor(CursorType.UI);
-            return true;
+            distances[i] = hits[i].distance;
          }
-         return false;
+         Array.Sort(distances, hits);
+         return hits;
       }
 
       private bool InteractWitMovement()
