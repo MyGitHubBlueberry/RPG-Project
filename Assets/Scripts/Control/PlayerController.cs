@@ -13,6 +13,7 @@ namespace RPG.Control
       [SerializeField] private CursorMapping[] cursorMappings;
       private Fighter fighter;
       private Health health;
+      private CombatTarget combatTarget;
 
       enum CursorType
       {
@@ -33,6 +34,7 @@ namespace RPG.Control
 
       private void Awake()
       {
+         combatTarget = GetComponent<CombatTarget>();
          fighter = GetComponent<Fighter>();
          health = GetComponent<Health>();
       }
@@ -46,10 +48,28 @@ namespace RPG.Control
             return;
          }
 
-         if(HandleCombat()) return;
-         if(HandleMovement()) return;
+         if(InteractWithComponent()) return;
+         if(InteractWitMovement()) return;
 
          SetCursor(CursorType.None);
+      }
+
+      private bool InteractWithComponent()
+      {
+         RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+         foreach (RaycastHit hit in hits)
+         {
+            IRaycastable[] raycastables = hit.transform.GetComponents<IRaycastable>();
+            foreach(IRaycastable raycastable in raycastables)
+            {
+               if(raycastable.HandleRaycast(this))
+               {
+                  SetCursor(CursorType.Combat);
+                  return true;
+               }   
+            }
+         }
+         return false;
       }
 
       private bool InteractWithUI()
@@ -62,22 +82,7 @@ namespace RPG.Control
          return false;
       }
 
-      private bool HandleCombat()
-      {
-         RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
-         if(ContainsCombatTarget(out CombatTarget target, hits))
-         {
-            if(Input.GetMouseButton(0))
-            {
-               fighter.Attack(target.gameObject);
-            }
-            SetCursor(CursorType.Combat);
-            return true;
-         }
-         return false;
-      }
-
-      private bool HandleMovement()
+      private bool InteractWitMovement()
       {
          bool hasHit = Physics.Raycast(GetMouseRay(), out RaycastHit hit);
          if (hasHit)
@@ -89,20 +94,6 @@ namespace RPG.Control
             SetCursor(CursorType.Movement);
             return true;
          }
-         return false;
-      }
-
-      private bool ContainsCombatTarget(out CombatTarget target, params RaycastHit[] hits)
-      {
-         foreach (RaycastHit hit in hits)
-         {
-            target = hit.transform.GetComponent<CombatTarget>();
-            if(target == null) continue;
-            if(!fighter.CanAttack(target.gameObject)) continue;
-            
-            return true;
-         }
-         target = null;
          return false;
       }
 
