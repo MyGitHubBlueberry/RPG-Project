@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace RPG.Animation
@@ -13,7 +12,7 @@ namespace RPG.Animation
 
       private void Awake()
       {
-         runtimeUpdateAnimationHandler= GetComponent<RuntimeUpdateAnimationHandler>();
+         runtimeUpdateAnimationHandler = GetComponent<RuntimeUpdateAnimationHandler>();
          animator = GetComponent<Animator>();
 
          runtimeAnimatorOverrides = GetComponents<IOverrideRuntimeAnimatorControllerEvent>();
@@ -38,6 +37,8 @@ namespace RPG.Animation
 
       private void OnDisable()
       {
+         runtimeUpdateAnimationHandler.OnExecuteMethodsRequiered -= SetExecuteMethods;
+
          foreach(IAnimationTriggerEvent animationEvent in animationTriggerEvents)
          {
             animationEvent.OnResetSetAnimationTriggerRequest -= ResetSetTrigger;

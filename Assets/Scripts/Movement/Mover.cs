@@ -37,6 +37,7 @@ namespace RPG.Movement
 
       private void OnDisable()
       {
+         updateAnimationHandler.OnSetFloatParametersRequiered -= SetFlaotParameters;
          GetComponent<Health>().OnZeroHealth -= DisableNavMesh;
       }
 
