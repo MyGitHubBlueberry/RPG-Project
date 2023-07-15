@@ -4,6 +4,7 @@ using RPG.Combat;
 using RPG.Attributes;
 using System;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 namespace RPG.Control
 {
@@ -16,6 +17,7 @@ namespace RPG.Control
       enum CursorType
       {
          None,
+         UI,
          Movement,
          Combat,
       }
@@ -37,12 +39,27 @@ namespace RPG.Control
 
       private void Update()
       {
-         if(health.IsDead()) return;
+         if(InteractWithUI()) return;
+         if(health.IsDead()) 
+         {
+            SetCursor(CursorType.None);
+            return;
+         }
 
          if(HandleCombat()) return;
          if(HandleMovement()) return;
 
          SetCursor(CursorType.None);
+      }
+
+      private bool InteractWithUI()
+      {
+         if(EventSystem.current.IsPointerOverGameObject())
+         {
+            SetCursor(CursorType.UI);
+            return true;
+         }
+         return false;
       }
 
       private bool HandleCombat()
