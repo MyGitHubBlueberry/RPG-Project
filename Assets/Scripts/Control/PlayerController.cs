@@ -5,11 +5,13 @@ using RPG.Attributes;
 using System.Linq;
 using UnityEngine.EventSystems;
 using System;
+using UnityEngine.AI;
 
 namespace RPG.Control
 {
    public partial class PlayerController : MonoBehaviour
    {
+      [SerializeField] private float maxNavMeshProjectionDistance = 1f;
       [SerializeField] private CursorMapping[] cursorMappings;
       private Fighter fighter;
       private Health health;
@@ -88,17 +90,29 @@ namespace RPG.Control
 
       private bool InteractWitMovement()
       {
-         bool hasHit = Physics.Raycast(GetMouseRay(), out RaycastHit hit);
-         if (hasHit)
+         if (RaycastNavMesh(out Vector3 target))
          {
             if(Input.GetMouseButton(0))
             {
-               GetComponent<Mover>().StartMoveAction(hit.point, 1f);
+               GetComponent<Mover>().StartMoveAction(target, 1f);
             }
             SetCursor(CursorType.Movement);
             return true;
          }
          return false;
+      }
+
+      private bool RaycastNavMesh(out Vector3 target)
+      {
+         target = new Vector3();
+
+         if (!Physics.Raycast(GetMouseRay(), out RaycastHit hit) ||
+             !NavMesh.SamplePosition(hit.point, out NavMeshHit navMeshHit,
+             maxNavMeshProjectionDistance, NavMesh.AllAreas))
+         return false;
+
+         target = navMeshHit.position;
+         return true;
       }
 
       private void SetCursor(CursorType type)

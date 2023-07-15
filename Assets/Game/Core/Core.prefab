@@ -270,6 +270,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3231671788218893178}
     m_Modifications:
+    - target: {fileID: -4085688301021465327, guid: 19ecc5b451fee455cb7789991a2645d6, type: 3}
+      propertyPath: maxNavMeshProjectionDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1943256529654943825, guid: 19ecc5b451fee455cb7789991a2645d6, type: 3}
       propertyPath: m_RootOrder
       value: 2
