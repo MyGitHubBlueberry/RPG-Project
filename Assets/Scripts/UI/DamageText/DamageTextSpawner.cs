@@ -1,3 +1,4 @@
+using RPG.Attributes;
 using UnityEngine;
 
 namespace RPG.UI
@@ -6,14 +7,26 @@ namespace RPG.UI
    {
       [SerializeField] private DamageText damageTextPrefab;
 
-      private void Start()
+      private Health health;
+
+      private void Awake()
       {
-         Spawn(1);
+         health = GetComponentInParent<Health>();
+      }
+
+      private void OnEnable()
+      {
+         health.OnTakeDamage += Spawn;
+      }
+
+      private void OnDisable()
+      {
+         health.OnTakeDamage -= Spawn;
       }
 
       private void Spawn(float damageAmmount)
       {
-         DamageText instance = Instantiate<DamageText>(damageTextPrefab, transform, true);
+         DamageText instance = Instantiate<DamageText>(damageTextPrefab, transform);
       }
    }
 }

@@ -6,7 +6,8 @@ namespace RPG.Animation
       {
          attack,
          die,
-         cancelAttack
+         cancelAttack,
+         damageTextPopup,
       }
 
       public enum Value

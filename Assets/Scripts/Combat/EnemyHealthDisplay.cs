@@ -35,14 +35,16 @@ namespace RPG.Combat
 
       private void UnsubscribeAndUpdateDisplay()
       {
-         targetHealth.OnHealthChanged -= UpdateDisplay;
+         targetHealth.OnHealthRegenerated -= UpdateDisplay;
+         targetHealth.OnTakeDamage -= _ => UpdateDisplay();
          UpdateDisplay();
       }
 
       private void UpdateDisplayAndSubscribe()
       {
          UpdateDisplay();
-         targetHealth.OnHealthChanged += UpdateDisplay;
+         targetHealth.OnHealthRegenerated += UpdateDisplay;
+         targetHealth.OnTakeDamage += _ => UpdateDisplay();;
       }
 
       private void UpdateDisplay()

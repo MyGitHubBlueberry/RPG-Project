@@ -4,9 +4,9 @@ namespace RPG.Animation
 {
    public class AnimatorController : MonoBehaviour
    {
-      private IOverrideRuntimeAnimatorControllerEvent[] runtimeAnimatorOverrides;
-      private RuntimeUpdateAnimationHandler runtimeUpdateAnimationHandler;
-      private IAnimationTriggerEvent[] animationTriggerEvents;
+      private IOverrideRuntimeAnimatorControllerEvent[] runtimeAnimatorOverrides = null;
+      private RuntimeUpdateAnimationHandler runtimeUpdateAnimationHandler = null;
+      private IAnimationTriggerEvent[] animationTriggerEvents = null;
       private Animator animator;
 
 
@@ -21,32 +21,49 @@ namespace RPG.Animation
 
       private void OnEnable()
       {
-         runtimeUpdateAnimationHandler.OnExecuteMethodsRequiered += SetExecuteMethods;
-
-
-         foreach(IAnimationTriggerEvent animationEvent in animationTriggerEvents)
+         if(runtimeUpdateAnimationHandler is not null)
          {
-            animationEvent.OnResetSetAnimationTriggerRequest += ResetSetTrigger;
+            runtimeUpdateAnimationHandler.OnExecuteMethodsRequiered += SetExecuteMethods;
+         }
+         
+         if(animationTriggerEvents is not null)
+         {
+            foreach(IAnimationTriggerEvent animationEvent in animationTriggerEvents)
+            {
+               animationEvent.OnResetSetAnimationTriggerRequest += ResetSetTrigger;
+            }
          }
 
-         foreach(IOverrideRuntimeAnimatorControllerEvent runtimeOverride in runtimeAnimatorOverrides)
+         if(runtimeAnimatorOverrides is not null)
          {
-            runtimeOverride.OnOverrideRuntimeAnimatorControllerRequest += OverrideRuntimeAnimatorController;
+            foreach(IOverrideRuntimeAnimatorControllerEvent runtimeOverride in runtimeAnimatorOverrides)
+            {
+               runtimeOverride.OnOverrideRuntimeAnimatorControllerRequest += OverrideRuntimeAnimatorController;
+            }
          }
       }
 
       private void OnDisable()
       {
-         runtimeUpdateAnimationHandler.OnExecuteMethodsRequiered -= SetExecuteMethods;
-
-         foreach(IAnimationTriggerEvent animationEvent in animationTriggerEvents)
+         if(runtimeUpdateAnimationHandler is not null)
          {
-            animationEvent.OnResetSetAnimationTriggerRequest -= ResetSetTrigger;
+            runtimeUpdateAnimationHandler.OnExecuteMethodsRequiered -= SetExecuteMethods;
          }
 
-         foreach(IOverrideRuntimeAnimatorControllerEvent runtimeOverride in runtimeAnimatorOverrides)
+         if(animationTriggerEvents is not null)
          {
-            runtimeOverride.OnOverrideRuntimeAnimatorControllerRequest -= OverrideRuntimeAnimatorController;
+            foreach(IAnimationTriggerEvent animationEvent in animationTriggerEvents)
+            {
+               animationEvent.OnResetSetAnimationTriggerRequest -= ResetSetTrigger;
+            }
+         }
+
+         if(runtimeAnimatorOverrides is not null)
+         {
+            foreach(IOverrideRuntimeAnimatorControllerEvent runtimeOverride in runtimeAnimatorOverrides)
+            {
+               runtimeOverride.OnOverrideRuntimeAnimatorControllerRequest -= OverrideRuntimeAnimatorController;
+            }
          }
       }
       private void SetExecuteMethods(object sender, RuntimeUpdateAnimationHandler.OnExecuteMethodsRequieredEventArgs e)

@@ -13,9 +13,10 @@ namespace RPG.Attributes
    {
       [SerializeField] private float regenerationPercentage = 70;
 
-      public event Action OnZeroHealth;
-      public event Action OnHealthChanged;
       public event EventHandler<IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs> OnResetSetAnimationTriggerRequest;
+      public event Action<float> OnTakeDamage;
+      public event Action OnHealthRegenerated;
+      public event Action OnZeroHealth;
 
       private LazyValue<float> health;
       private bool isDead;
@@ -46,7 +47,7 @@ namespace RPG.Attributes
          float regenHealthPoints = GetMaxHealth() * regenerationPercentage / 100;
          health.value = (GetPercentage() > regenerationPercentage) ? health.value : regenHealthPoints;
 
-         OnHealthChanged?.Invoke();
+         OnHealthRegenerated?.Invoke();
       }
 
       private void Die()
@@ -85,7 +86,7 @@ namespace RPG.Attributes
       {
          health.value = Mathf.Max(health.value - damage, 0f);
          
-         OnHealthChanged?.Invoke();
+         OnTakeDamage?.Invoke(damage);
 
          if(health.value == 0)
          {

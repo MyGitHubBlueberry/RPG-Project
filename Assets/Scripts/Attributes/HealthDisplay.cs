@@ -23,19 +23,21 @@ namespace RPG.Attributes
 
       private void OnEnable()
       {
-         health.OnHealthChanged += UpdateDispaly;
-         health.OnZeroHealth += UpdateDispaly;
+         health.OnHealthRegenerated += UpdateDisplay;
+         health.OnTakeDamage += _ => UpdateDisplay();
+         health.OnZeroHealth += UpdateDisplay;
       }
 
-      private void Start() => UpdateDispaly();
+      private void Start() => UpdateDisplay();
 
       private void OnDisable()
       {
-         health.OnHealthChanged -= UpdateDispaly;
-         health.OnZeroHealth -= UpdateDispaly;
+         health.OnHealthRegenerated -= UpdateDisplay;
+         health.OnTakeDamage -= _ => UpdateDisplay();
+         health.OnZeroHealth -= UpdateDisplay;
       }
 
-      private void UpdateDispaly()
+      private void UpdateDisplay()
       {
          string healthPersent = $"{health.GetHealth():0}/{health.GetMaxHealth():0}";
          stringBuilder.Append(healthPersent);
