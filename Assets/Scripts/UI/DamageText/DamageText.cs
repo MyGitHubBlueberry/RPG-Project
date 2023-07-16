@@ -1,24 +1,16 @@
 using UnityEngine;
 using TMPro;
-using RPG.Animation;
 using System;
 
 namespace RPG.UI
 {
-   public class DamageText : MonoBehaviour, IAnimationTriggerEvent
+   public class DamageText : MonoBehaviour
    {
-      public event EventHandler<IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs> OnResetSetAnimationTriggerRequest;
-
       [SerializeField] private TextMeshProUGUI damageText;
 
-      public void InvokeTextAnimation()
+      public void SetValue(float amount)
       {
-         //damageText.text = $"{damage.ToString():0.0}";
-         OnResetSetAnimationTriggerRequest?.Invoke(this, new IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs
-         {
-            setTrigger = AnimatorParameters.Trigger.damageTextPopup,
-            resetTrigger = AnimatorParameters.Trigger.damageTextPopup,
-         });
+         damageText.text = String.Format("{0:0.0}", amount);
       }
 
       public void DestroyText()
