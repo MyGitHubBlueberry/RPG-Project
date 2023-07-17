@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1000587775596699831}
     m_Modifications:
+    - target: {fileID: 2207950236531443002, guid: c488f28683b077a28b69d1dcd7594fd0, type: 3}
+      propertyPath: health
+      value: 
+      objectReference: {fileID: 7449005259776334658}
     - target: {fileID: 6348121127668593685, guid: c488f28683b077a28b69d1dcd7594fd0, type: 3}
       propertyPath: m_Name
       value: Health Bar
@@ -279,3 +283,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4223814044176242736, guid: 79c4ecf49f335a3078602920e1d03343, type: 3}
   m_PrefabInstance: {fileID: 3998296215092754567}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7449005259776334658 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5772739409859863493, guid: 79c4ecf49f335a3078602920e1d03343, type: 3}
+  m_PrefabInstance: {fileID: 3998296215092754567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000587775596699828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47b5ec05e3615266190f81f3eba6bcf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
