@@ -64,7 +64,7 @@ MonoBehaviour:
   destination: 0
   fadeOutTime: 0.5
   fadeWaitTime: 0.5
-  fadeInTime: 1
+  fadeInTime: 2
 --- !u!1 &8688842851415405535
 GameObject:
   m_ObjectHideFlags: 0
