@@ -6,6 +6,7 @@ namespace RPG.Attributes
    {
       [SerializeField] private Health health;
       [SerializeField] private RectTransform foreground;
+      [SerializeField] private Canvas canvas;
       
       private void OnEnable()
       {
@@ -23,7 +24,9 @@ namespace RPG.Attributes
 
       private void UpdateDisplay()
       {
-         foreground.localScale = new Vector3(health.GetPercentage() / 100, 1 ,1);
+         float healthPersentage = health.GetPercentage() / 100;
+         foreground.localScale = new Vector3(healthPersentage, 1 ,1);
+         canvas.enabled = !(Mathf.Approximately(healthPersentage,0) || Mathf.Approximately(healthPersentage,1));
       }
    }
 }
