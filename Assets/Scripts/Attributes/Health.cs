@@ -29,14 +29,14 @@ namespace RPG.Attributes
       }
       private void OnEnable()
       {
-         GetComponent<BaseStats>().OnLevelUp += RegenerateHealth;
+         GetComponent<BaseStats>().OnLevelUp += RegenerateHealthPercent;
       }
 
       private void Start() => health.ForceInit();
 
       private void OnDisable()
       {
-         GetComponent<BaseStats>().OnLevelUp -= RegenerateHealth;
+         GetComponent<BaseStats>().OnLevelUp -= RegenerateHealthPercent;
       }
       
       private float GetInitialHealth()
@@ -44,13 +44,11 @@ namespace RPG.Attributes
          return GetComponent<BaseStats>().GetStat(Stat.Health);
       }
 
-      private void RegenerateHealth()
+      private void RegenerateHealthPercent()
       {
-         float regenHealthPoints = GetMaxHealth() * regenerationPercentage / 100;
-         health.value = (GetPercentage() > regenerationPercentage) ? health.value : regenHealthPoints;
-
-         OnHealthRegenerated?.Invoke();
-         OnSFXTriggerRequest?.Invoke(SFXParameter.HealSpell, null);
+         float healthAfterRegen = GetMaxHealth() * regenerationPercentage / 100;
+         float healthToRegenerate = (GetPercentage() > regenerationPercentage) ? 0 : healthAfterRegen - health.value;
+         RegenerateHealth(healthToRegenerate);
       }
 
       private void Die(bool isRestoredState = false)
@@ -86,6 +84,15 @@ namespace RPG.Attributes
 
          float rewardXP = GetComponent<BaseStats>().GetStat(Stat.ExperienceReward);
          experience.GainExperience(rewardXP);
+      }
+
+      public void RegenerateHealth(float regenHealthPoints)
+      {
+         if(Mathf.Approximately(health.value, GetMaxHealth())) return;
+         health.value = Mathf.Min(GetMaxHealth(), health.value + regenHealthPoints);
+
+         OnHealthRegenerated?.Invoke();
+         OnSFXTriggerRequest?.Invoke(SFXParameter.HealSpell, null);
       }
 
       public void TakeDamage(GameObject instigator,float damage)
