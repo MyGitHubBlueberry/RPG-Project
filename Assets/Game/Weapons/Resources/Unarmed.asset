@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackParameter: 3
   animatorOverride: {fileID: 0}
-  equippedPrefab: {fileID: 0}
+  equippedPrefab: {fileID: -981632831217611542, guid: c0fcff3ed34d54d9aaef5232f6e07137, type: 3}
   damage: 3
   persantageBonus: 0
   range: 2

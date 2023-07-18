@@ -33,10 +33,17 @@ namespace RPG.SFX
          }
       }
 
-      private void PlayFromParameter(SFXParameter parameter)
+      private void PlayFromParameter(SFXParameter parameter, SFXPlayer ownPlayer)
       {
-         SFXPlayer sfxPlayer = sfxPlayers.Where(player => player.GetSFXParameter() == parameter).FirstOrDefault();
-         sfxPlayer.PlayClip();
+         if(ownPlayer is null)
+         {
+            SFXPlayer sfxPlayer = sfxPlayers.Where(player => player.GetSFXParameter() == parameter).FirstOrDefault();
+            sfxPlayer.PlayClip();
+         }
+         else
+         {
+            ownPlayer.PlayClip();
+         }
       }
    }
 }

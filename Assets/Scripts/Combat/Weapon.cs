@@ -1,12 +1,21 @@
+using RPG.SFX;
 using UnityEngine;
 
 namespace RPG.Combat
 {   
    public class Weapon : MonoBehaviour
    {
-      public void OnHit()
+      [SerializeField] private SFXParameter attackParameter;
+      [SerializeField] private SFXPlayer sfxPlayer;
+
+      public SFXParameter GetSFXParameter()
       {
-         print("Weapon hit " +  gameObject.name);
+         return attackParameter;
+      }
+
+      public SFXPlayer GetSFXPlayer()
+      {
+         return sfxPlayer;
       }
    }
 }

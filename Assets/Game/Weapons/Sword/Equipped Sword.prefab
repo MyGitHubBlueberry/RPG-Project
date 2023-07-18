@@ -30,6 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6937924996818117127}
+  - {fileID: 7104749356724900500}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,6 +46,81 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee7030a6a55c78c89cafd88fc410ab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackParameter: 4
+  sfxPlayer: {fileID: 3758541268054367242}
+--- !u!1001 &6838257436084626195
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8827100634019560986}
+    m_Modifications:
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.542
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.558
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495680073463325208, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+      propertyPath: m_Name
+      value: Attack Sword Sound
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+--- !u!114 &3758541268054367242 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7696471129543261977, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+  m_PrefabInstance: {fileID: 6838257436084626195}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cac376a277f4c4abb9f23e92b638397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &7104749356724900500 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4359340463027302791, guid: d991f7ead6abf41648a17abf808f9852, type: 3}
+  m_PrefabInstance: {fileID: 6838257436084626195}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6937924996817934345
 PrefabInstance:
   m_ObjectHideFlags: 0

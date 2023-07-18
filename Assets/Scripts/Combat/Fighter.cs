@@ -19,7 +19,7 @@ namespace RPG.Combat
    {
       public event EventHandler<IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs> OnResetSetAnimationTriggerRequest;
       public event Action<AnimatorOverrideController> OnOverrideRuntimeAnimatorControllerRequest;
-      public event Action<SFXParameter> OnSFXTriggerRequest;
+      public event Action<SFXParameter, SFXPlayer> OnSFXTriggerRequest;
       public event Action OnAttackCanceled;
       public event Action OnTargetSet;
 
@@ -90,13 +90,8 @@ namespace RPG.Combat
 
          float damage = GetComponent<BaseStats>().GetStat(Stat.Damage);
 
-         OnSFXTriggerRequest?.Invoke(currentWeaponConfig.GetSFXParameter());
+         OnSFXTriggerRequest?.Invoke(currentWeapon.value.GetSFXParameter(), currentWeapon.value.GetSFXPlayer());
 
-         if(currentWeapon.value != null)
-         {
-            currentWeapon.value.OnHit();
-         }
-         
          if(currentWeaponConfig.HasProjectile())
          {
             currentWeaponConfig.LaunchProjectile(rightHand, leftHand, target, gameObject, damage);

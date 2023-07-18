@@ -15,7 +15,7 @@ namespace RPG.Attributes
       [SerializeField] private float regenerationPercentage = 70;
 
       public event EventHandler<IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs> OnResetSetAnimationTriggerRequest;
-      public event Action<SFXParameter> OnSFXTriggerRequest;
+      public event Action<SFXParameter,SFXPlayer> OnSFXTriggerRequest;
       public event Action<float> OnTakeDamage;
       public event Action OnHealthRegenerated;
       public event Action OnZeroHealth;
@@ -50,7 +50,7 @@ namespace RPG.Attributes
          health.value = (GetPercentage() > regenerationPercentage) ? health.value : regenHealthPoints;
 
          OnHealthRegenerated?.Invoke();
-         OnSFXTriggerRequest?.Invoke(SFXParameter.HealSpell);
+         OnSFXTriggerRequest?.Invoke(SFXParameter.HealSpell, null);
       }
 
       private void Die(bool isRestoredState = false)
@@ -67,7 +67,7 @@ namespace RPG.Attributes
             setTrigger = AnimatorParameters.Trigger.die,
          });
 
-         if(!isRestoredState) OnSFXTriggerRequest?.Invoke(SFXParameter.Death);
+         if(!isRestoredState) OnSFXTriggerRequest?.Invoke(SFXParameter.Death, null);
       }
 
       private void UpdateState()
@@ -93,7 +93,7 @@ namespace RPG.Attributes
          health.value = Mathf.Max(health.value - damage, 0f);
          
          OnTakeDamage?.Invoke(damage);
-         OnSFXTriggerRequest?.Invoke(SFXParameter.TakeDamage);
+         OnSFXTriggerRequest?.Invoke(SFXParameter.TakeDamage, null);
 
 
          if(health.value == 0)

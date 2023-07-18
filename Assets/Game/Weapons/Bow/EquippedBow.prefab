@@ -30,6 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1724885094827173917}
+  - {fileID: 507953737054168143}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee7030a6a55c78c89cafd88fc410ab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackParameter: 6
+  sfxPlayer: {fileID: 5889788573652167377}
 --- !u!1001 &1729153865531268631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -107,3 +110,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4281075886339594, guid: 7f105c0c272e6c146b4b41cdc53ea356, type: 3}
   m_PrefabInstance: {fileID: 1729153865531268631}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4284014194749642184
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8624461331241939845}
+    m_Modifications:
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495680073463325208, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+      propertyPath: m_Name
+      value: Attack Bow Sound
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+--- !u!4 &507953737054168143 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4359340463027302791, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+  m_PrefabInstance: {fileID: 4284014194749642184}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5889788573652167377 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7696471129543261977, guid: 6c31246a1d53e5084b84c17db14a1b14, type: 3}
+  m_PrefabInstance: {fileID: 4284014194749642184}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cac376a277f4c4abb9f23e92b638397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

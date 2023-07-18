@@ -4,7 +4,7 @@ namespace RPG.SFX
 {
    interface ISFXEvent
    {
-      public event Action<SFXParameter> OnSFXTriggerRequest;
+      public event Action<SFXParameter, SFXPlayer> OnSFXTriggerRequest;
    }
 
 }

@@ -8,7 +8,6 @@ namespace RPG.Combat
    public class WeaponConfig : ScriptableObject
    {
       private const string WEAPON_NAME = "Weapon";
-      [SerializeField] private SFXParameter attackParameter;
       [SerializeField] private AnimatorOverrideController animatorOverride = null;
       [SerializeField] private Weapon equippedPrefab = null;
       [SerializeField] private float damage = 5f;
@@ -56,11 +55,6 @@ namespace RPG.Combat
       {
          Projectile projectileInstance = Instantiate(projectile,GetHand(rightHand, leftHand).position, Quaternion.identity);
          projectileInstance.SetTarget(target, instigator, calculatedDamage);
-      }
-
-      public SFXParameter GetSFXParameter()
-      {
-         return attackParameter;
       }
 
       public bool HasProjectile()
