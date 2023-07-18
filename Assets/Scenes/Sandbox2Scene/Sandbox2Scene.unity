@@ -3249,6 +3249,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2284233828132020900, guid: feb0f88ca36b36c46acd5c1c3fedba2b, type: 3}
+      propertyPath: defaultWeaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 57097238b849aed1b92eab7824cf38e9, type: 2}
     - target: {fileID: 3231671788218893177, guid: feb0f88ca36b36c46acd5c1c3fedba2b, type: 3}
       propertyPath: m_Name
       value: Core

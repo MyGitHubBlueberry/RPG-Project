@@ -63,6 +63,10 @@ PrefabInstance:
       propertyPath: defaultWeapon
       value: 
       objectReference: {fileID: 11400000, guid: 46db326c1811c8fa0827e4b713961a47, type: 2}
+    - target: {fileID: 2629844955596968631, guid: 53c06144deaff3fd9b1221e742c4095a, type: 3}
+      propertyPath: defaultWeaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 46db326c1811c8fa0827e4b713961a47, type: 2}
     - target: {fileID: 3762139834348860293, guid: 53c06144deaff3fd9b1221e742c4095a, type: 3}
       propertyPath: progression
       value: 

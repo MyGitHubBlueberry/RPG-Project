@@ -26,23 +26,24 @@ namespace RPG.Combat
       [SerializeField] private float timeBetweenAttacks = 1f;
       [SerializeField] private Transform rightHand = null;
       [SerializeField] private Transform leftHand = null;
-      [SerializeField] private Weapon defaultWeapon;
+      [SerializeField] private WeaponConfig defaultWeaponConfig;
 
       private Health target;
       private Mover mover;
+      private WeaponConfig currentWeaponConfig;
       private LazyValue<Weapon> currentWeapon;
       private float timeSinceLastAttack = Mathf.Infinity;
 
       private void Awake()
       {
          mover = GetComponent<Mover>();
+         currentWeaponConfig = defaultWeaponConfig;
          currentWeapon = new LazyValue<Weapon>(SetupDefaultWeapon);
       }
 
       private Weapon SetupDefaultWeapon()
       {
-         AttachWeapon(defaultWeapon);
-         return defaultWeapon;
+         return AttachWeapon(defaultWeaponConfig);
       }
 
       private void Start()
@@ -89,11 +90,16 @@ namespace RPG.Combat
 
          float damage = GetComponent<BaseStats>().GetStat(Stat.Damage);
 
-         OnSFXTriggerRequest?.Invoke(currentWeapon.value.GetSFXParameter());
-         
-         if(currentWeapon.value.HasProjectile())
+         OnSFXTriggerRequest?.Invoke(currentWeaponConfig.GetSFXParameter());
+
+         if(currentWeapon.value != null)
          {
-            currentWeapon.value.LaunchProjectile(rightHand, leftHand, target, gameObject, damage);
+            currentWeapon.value.OnHit();
+         }
+         
+         if(currentWeaponConfig.HasProjectile())
+         {
+            currentWeaponConfig.LaunchProjectile(rightHand, leftHand, target, gameObject, damage);
          }
          else
          {
@@ -109,14 +115,14 @@ namespace RPG.Combat
 
       private bool GetIsInRange()
       {
-         return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.value.GetRange();
+         return Vector3.Distance(transform.position, target.transform.position) < currentWeaponConfig.GetRange();
       }
 
       public IEnumerable<float> GetAdditiveModifiers(Stat stat)
       {
          if(stat == Stat.Damage)
          {
-            yield return currentWeapon.value.GetDamage();
+            yield return currentWeaponConfig.GetDamage();
          }
       }
 
@@ -124,21 +130,23 @@ namespace RPG.Combat
       {
          if(stat == Stat.Damage)
          {
-            yield return currentWeapon.value.GetPersantageBonus();
+            yield return currentWeaponConfig.GetPersantageBonus();
          }
       }
       
-      public void EquipWeapon(Weapon weapon)
+      public void EquipWeapon(WeaponConfig weaponConfig)
       {
-         currentWeapon.value = weapon;
-         AttachWeapon(weapon);
+         currentWeaponConfig = weaponConfig;
+         currentWeapon.value = AttachWeapon(weaponConfig);
       }
 
-      private void AttachWeapon(Weapon weapon)
+      private Weapon AttachWeapon(WeaponConfig weaponConfig)
       {
-         weapon.Spawn(rightHand, leftHand, out AnimatorOverrideController animatorOverride);
+         Weapon weapon = weaponConfig.Spawn(rightHand, leftHand, out AnimatorOverrideController animatorOverride);
 
          OnOverrideRuntimeAnimatorControllerRequest?.Invoke(animatorOverride);
+
+         return weapon;
       }
 
       public bool CanAttack(GameObject combatTarget)
@@ -167,13 +175,13 @@ namespace RPG.Combat
 
       public JToken CaptureAsJToken()
       {
-         return JToken.FromObject(currentWeapon.value.name);
+         return JToken.FromObject(currentWeaponConfig.name);
       }
 
       public void RestoreFromJToken(JToken state)
       {
          string weaponName = state.ToObject<string>();
-         Weapon weapon = Resources.Load<Weapon>(weaponName);
+         WeaponConfig weapon = Resources.Load<WeaponConfig>(weaponName);
          EquipWeapon(weapon);
       }
 

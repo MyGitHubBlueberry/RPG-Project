@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackParameter: 6
   animatorOverride: {fileID: 22100000, guid: 25cb54e29b24583af9da481b53c80fb1, type: 2}
-  equippedPrefab: {fileID: 8195888620006352632, guid: 7094606aae81f3c05bc51f405e3920f7, type: 3}
+  equippedPrefab: {fileID: -156983657915521500, guid: 7094606aae81f3c05bc51f405e3920f7, type: 3}
   damage: 6
   persantageBonus: 0
   range: 20
