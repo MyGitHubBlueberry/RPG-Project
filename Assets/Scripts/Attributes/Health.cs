@@ -6,14 +6,16 @@ using RPG.Stats;
 using RPG.Core;
 using GameDevTV.Utils;
 using RPG.Animation;
+using RPG.SFX;
 
 namespace RPG.Attributes
 {
-   public class Health : MonoBehaviour, ISaveable, IAnimationTriggerEvent
+   public class Health : MonoBehaviour, ISaveable, IAnimationTriggerEvent, ISFXEvent
    {
       [SerializeField] private float regenerationPercentage = 70;
 
       public event EventHandler<IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs> OnResetSetAnimationTriggerRequest;
+      public event Action<SFXParameter> OnSFXTriggerRequest;
       public event Action<float> OnTakeDamage;
       public event Action OnHealthRegenerated;
       public event Action OnZeroHealth;
@@ -48,27 +50,31 @@ namespace RPG.Attributes
          health.value = (GetPercentage() > regenerationPercentage) ? health.value : regenHealthPoints;
 
          OnHealthRegenerated?.Invoke();
+         OnSFXTriggerRequest?.Invoke(SFXParameter.HealSpell);
       }
 
-      private void Die()
+      private void Die(bool isRestoredState = false)
       {
          if(isDead) return;
 
          isDead = true;
          GetComponent<ActionScheduler>().CancelCurrentAction();
          OnZeroHealth?.Invoke();
+         
          OnResetSetAnimationTriggerRequest?.Invoke(this,new IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs
          {
             resetTrigger = AnimatorParameters.Trigger.die,
             setTrigger = AnimatorParameters.Trigger.die,
          });
+
+         if(!isRestoredState) OnSFXTriggerRequest?.Invoke(SFXParameter.Death);
       }
 
       private void UpdateState()
       {
          if(health.value <= 0)
          {
-            Die();
+            Die(true);
          }
       }
 
@@ -87,6 +93,8 @@ namespace RPG.Attributes
          health.value = Mathf.Max(health.value - damage, 0f);
          
          OnTakeDamage?.Invoke(damage);
+         OnSFXTriggerRequest?.Invoke(SFXParameter.TakeDamage);
+
 
          if(health.value == 0)
          {

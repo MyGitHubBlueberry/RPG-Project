@@ -9,15 +9,19 @@ using RPG.Saving;
 using RPG.Movement;
 using RPG.Animation;
 using RPG.Attributes;
+using RPG.SFX;
 
 namespace RPG.Combat
 {
-   public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider, IAnimationTriggerEvent, IOverrideRuntimeAnimatorControllerEvent
+   public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider, 
+                          IAnimationTriggerEvent, IOverrideRuntimeAnimatorControllerEvent, 
+                          ISFXEvent
    {
-      public event Action OnTargetSet;
-      public event Action OnAttackCanceled;
       public event EventHandler<IAnimationTriggerEvent.OnResetSetAnimationTriggerRequestEventArgs> OnResetSetAnimationTriggerRequest;
       public event Action<AnimatorOverrideController> OnOverrideRuntimeAnimatorControllerRequest;
+      public event Action<SFXParameter> OnSFXTriggerRequest;
+      public event Action OnAttackCanceled;
+      public event Action OnTargetSet;
 
       [SerializeField] private float timeBetweenAttacks = 1f;
       [SerializeField] private Transform rightHand = null;
@@ -84,6 +88,9 @@ namespace RPG.Combat
          if(target == null) return;
 
          float damage = GetComponent<BaseStats>().GetStat(Stat.Damage);
+
+         OnSFXTriggerRequest?.Invoke(currentWeapon.value.GetSFXParameter());
+         
          if(currentWeapon.value.HasProjectile())
          {
             currentWeapon.value.LaunchProjectile(rightHand, leftHand, target, gameObject, damage);

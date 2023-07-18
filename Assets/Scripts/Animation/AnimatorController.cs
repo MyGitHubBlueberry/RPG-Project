@@ -4,9 +4,9 @@ namespace RPG.Animation
 {
    public class AnimatorController : MonoBehaviour
    {
-      private IOverrideRuntimeAnimatorControllerEvent[] runtimeAnimatorOverrides = null;
-      private RuntimeUpdateAnimationHandler runtimeUpdateAnimationHandler = null;
-      private IAnimationTriggerEvent[] animationTriggerEvents = null;
+      private IOverrideRuntimeAnimatorControllerEvent[] runtimeAnimatorOverrides;
+      private RuntimeUpdateAnimationHandler runtimeUpdateAnimationHandler;
+      private IAnimationTriggerEvent[] animationTriggerEvents;
       private Animator animator;
 
 
