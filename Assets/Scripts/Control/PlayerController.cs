@@ -14,6 +14,7 @@ namespace RPG.Control
       [SerializeField] private float maxNavMeshProjectionDistance = 1f;
       [SerializeField] private float raycastRadius = 1f;
       [SerializeField] private CursorMapping[] cursorMappings;
+      
       private Fighter fighter;
       private Health health;
       private Mover mover;

@@ -33075,9 +33075,21 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.18644406
       objectReference: {fileID: 0}
+    - target: {fileID: 2629844955596968631, guid: 53c06144deaff3fd9b1221e742c4095a, type: 3}
+      propertyPath: timeBetweenAttacks
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2629844955596968631, guid: 53c06144deaff3fd9b1221e742c4095a, type: 3}
+      propertyPath: defaultWeaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: f2f86192ea42b64d5984205c9351be96, type: 2}
     - target: {fileID: 2748103072345303933, guid: 53c06144deaff3fd9b1221e742c4095a, type: 3}
       propertyPath: uniqueIdentifier
       value: 8b421d12-caf4-463d-a66a-f093cc535a9d
+      objectReference: {fileID: 0}
+    - target: {fileID: 5481457089766445774, guid: 53c06144deaff3fd9b1221e742c4095a, type: 3}
+      propertyPath: maxSpeed
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7449005259776334658, guid: 53c06144deaff3fd9b1221e742c4095a, type: 3}
       propertyPath: health
@@ -43198,6 +43210,10 @@ PrefabInstance:
     - target: {fileID: 3292158127919685150, guid: 3d906e1a715c82c7a8f3171f3178658a, type: 3}
       propertyPath: m_Name
       value: Water
+      objectReference: {fileID: 0}
+    - target: {fileID: 3292158127919685150, guid: 3d906e1a715c82c7a8f3171f3178658a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d906e1a715c82c7a8f3171f3178658a, type: 3}

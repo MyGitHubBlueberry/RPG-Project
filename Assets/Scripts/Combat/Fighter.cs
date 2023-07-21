@@ -146,10 +146,12 @@ namespace RPG.Combat
 
       public bool CanAttack(GameObject combatTarget)
       {
+         if(combatTarget == null) return false;
+         if(!mover.CanMoveTo(combatTarget.transform.position) &&
+            !GetIsInRange(combatTarget.transform)) return false;
+            
          return combatTarget.GetComponent<Health>() != null 
-            && combatTarget.GetComponent<Health>().IsAlive()
-            && mover.CanMoveTo(combatTarget.transform.position)
-            || GetIsInRange(combatTarget.transform);
+            && combatTarget.GetComponent<Health>().IsAlive();
       }
 
       public void Attack(GameObject combatTarget)
