@@ -12,6 +12,7 @@ namespace RPG.Control
    public class AIController : MonoBehaviour
    {
       [SerializeField] private float chaseDistance = 5f;
+      [SerializeField] private float shoutDistance = 5f;
       [SerializeField] private float suspicionTime = 3f;
       [SerializeField] private float aggroCooldownTime = 5f;
       [SerializeField] private PatrolPath patrolPath;
@@ -139,6 +140,19 @@ namespace RPG.Control
       {
          timeSinceLastSawPlayer = 0f;
          fighter.Attack(player);
+
+         AggrevateNearbyEnemies();
+      }
+
+      private void AggrevateNearbyEnemies()
+      {
+         RaycastHit[] hits = Physics.SphereCastAll(transform.position, shoutDistance, Vector3.up, 0f);
+         foreach(RaycastHit hit in hits)
+         {
+            if(!hit.transform.TryGetComponent<AIController>(out AIController controller)) continue;
+
+            controller.Aggrevate();
+         }
       }
 
       private bool IsAggrevated()

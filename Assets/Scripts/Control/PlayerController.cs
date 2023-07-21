@@ -12,6 +12,7 @@ namespace RPG.Control
    public partial class PlayerController : MonoBehaviour
    {
       [SerializeField] private float maxNavMeshProjectionDistance = 1f;
+      [SerializeField] private float raycastRadius = 1f;
       [SerializeField] private CursorMapping[] cursorMappings;
       private Fighter fighter;
       private Health health;
@@ -80,7 +81,7 @@ namespace RPG.Control
 
       private RaycastHit[] RaycastAllSorted()
       {
-         RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+         RaycastHit[] hits = Physics.SphereCastAll(GetMouseRay(), raycastRadius);
          float[] distances = new float[hits.Length];
          for (int i = 0; i < distances.Length; i++)
          {
@@ -118,12 +119,6 @@ namespace RPG.Control
          if(!hasCastToNavMesh) return false;
 
          target = navMeshHit.position;
-
-         // NavMeshPath path = new NavMeshPath();
-         // bool hasPath = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, path);
-         // if(!hasPath)return false;
-         // if(path.status != NavMeshPathStatus.PathComplete) return false;
-         // if(GetPathLength(path) > maxNavMeshPathLength) return false;
 
          return true;
       }
