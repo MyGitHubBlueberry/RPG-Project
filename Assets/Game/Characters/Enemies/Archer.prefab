@@ -77,7 +77,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8678467142353065035, guid: 53c06144deaff3fd9b1221e742c4095a, type: 3}
       propertyPath: chaseDistance
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53c06144deaff3fd9b1221e742c4095a, type: 3}

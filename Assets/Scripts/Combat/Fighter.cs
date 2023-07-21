@@ -149,7 +149,7 @@ namespace RPG.Combat
          return combatTarget.GetComponent<Health>() != null 
             && combatTarget.GetComponent<Health>().IsAlive()
             && mover.CanMoveTo(combatTarget.transform.position)
-            && GetIsInRange(combatTarget.transform);
+            || GetIsInRange(combatTarget.transform);
       }
 
       public void Attack(GameObject combatTarget)

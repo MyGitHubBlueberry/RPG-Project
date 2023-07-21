@@ -22,7 +22,6 @@ namespace RPG.SFX
       internal void PlayClip()
       {
          audioSource.PlayOneShot(sfx.GetRandomClip());
-         print("playing");
       }
    }
 }
