@@ -11,6 +11,7 @@ namespace RPG.Movement
    public class Mover : MonoBehaviour, IAction, ISaveable
    {
       [SerializeField] private float maxSpeed = 6f;
+      [SerializeField] private float maxNavMeshPathLength = 40f;
 
       private Animation.RuntimeUpdateAnimationHandler updateAnimationHandler;
       private NavMeshAgent navMeshAgent;
@@ -48,6 +49,27 @@ namespace RPG.Movement
          updateAnimationHandler.OnSetFloatParametersRequiered -= SetFlaotParameters;
       }
 
+
+      private float GetPathLength(NavMeshPath path)
+      {
+         float pathLength = 0;
+
+         for (int index = 0, nextIndex = 1; nextIndex < path.corners.Length; index++, nextIndex++)
+         {
+            pathLength += Vector3.Distance(path.corners[index], path.corners[nextIndex]);
+         }
+         return pathLength;
+      }
+      
+      private float GetMovementSpeed()
+      {
+         Vector3 velocity = navMeshAgent.velocity;
+         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+         float speed = localVelocity.z;
+
+         return speed;
+      }
+
       private void DisableNavMesh()
       {
          navMeshAgent.enabled = false;
@@ -71,15 +93,16 @@ namespace RPG.Movement
          navMeshAgent.isStopped = true;
       }
 
-      private float GetMovementSpeed()
+      public bool CanMoveTo(Vector3 destination)
       {
-         Vector3 velocity = navMeshAgent.velocity;
-         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
-         float speed = localVelocity.z;
+         NavMeshPath path = new NavMeshPath();
+         bool hasPath = NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path);
+         if(!hasPath)return false;
+         if(path.status != NavMeshPathStatus.PathComplete) return false;
+         if(GetPathLength(path) > maxNavMeshPathLength) return false;
 
-         return speed;
+         return true;
       }
-
       public JToken CaptureAsJToken()
       {
          return transform.position.ToToken();
