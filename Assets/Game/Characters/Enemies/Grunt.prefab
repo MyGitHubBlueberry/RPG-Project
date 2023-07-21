@@ -155,7 +155,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: e7fa135f35d0803ed97e5ef80139c3c1, type: 2}
     - target: {fileID: 314816180329436097, guid: 79c4ecf49f335a3078602920e1d03343, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1370179732327475760, guid: 79c4ecf49f335a3078602920e1d03343, type: 3}
       propertyPath: hand
@@ -299,7 +299,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseDistance: 5
-  suspicionTime: 5
+  suspicionTime: 3
+  aggroCooldownTime: 5
   patrolPath: {fileID: 0}
   waypointTolerance: 1
   waypointDwellTime: 3

@@ -12,12 +12,14 @@ namespace RPG.Control
    public class AIController : MonoBehaviour
    {
       [SerializeField] private float chaseDistance = 5f;
-      [SerializeField] private float suspicionTime = 5f;
+      [SerializeField] private float suspicionTime = 3f;
+      [SerializeField] private float aggroCooldownTime = 5f;
       [SerializeField] private PatrolPath patrolPath;
       [SerializeField] private float waypointTolerance = 1f;
       [SerializeField] private float waypointDwellTime = 3f;
       [Range(0,1)]
       [SerializeField] private float patrolSpeedCoefficient = 0.2f;
+
       
       private Fighter fighter;
       private Health health;
@@ -27,6 +29,7 @@ namespace RPG.Control
       private LazyValue<Vector3> guardPosition; 
       private float timeSinceLastSawPlayer = Mathf.Infinity;
       private float timeSinceArrivedAtWaypoint = Mathf.Infinity;
+      private float timeSinceAggrevated = Mathf.Infinity;
       private int currentWaypointIndex = 0;
 
       private void Awake()
@@ -44,11 +47,16 @@ namespace RPG.Control
          guardPosition.ForceInit();
       }
 
+      private void OnEnable()
+      {
+         health.OnTakeDamage += _ => Aggrevate();
+      }
+
       private void Update()
       {
          if (health.IsDead()) return;
 
-         if (InAttackRangeOfPlayer() && fighter.CanAttack(player))
+         if (IsAggrevated() && fighter.CanAttack(player))
          {
             AttackBehaviour();
          }
@@ -64,6 +72,16 @@ namespace RPG.Control
          UpdateTimers();
       }
 
+      private void OnDisable()
+      {
+         health.OnTakeDamage -= _ => Aggrevate();
+      }
+
+      private void Aggrevate()
+      {
+         timeSinceAggrevated = 0f;
+      }
+
       private Vector3 GetGuardPosition()
       {
          return transform.position;
@@ -73,6 +91,7 @@ namespace RPG.Control
       {
          timeSinceLastSawPlayer += Time.deltaTime;
          timeSinceArrivedAtWaypoint += Time.deltaTime;
+         timeSinceAggrevated += Time.deltaTime;
       }
 
       private void PatrolBehaviour()
@@ -122,10 +141,10 @@ namespace RPG.Control
          fighter.Attack(player);
       }
 
-      private bool InAttackRangeOfPlayer()
+      private bool IsAggrevated()
       {
          float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-         return distanceToPlayer < chaseDistance;
+         return distanceToPlayer < chaseDistance || timeSinceAggrevated < aggroCooldownTime;
       }
 
       //*Called by Unity
